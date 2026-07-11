@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Apprends avec Pixel</title>
+<title>Apprends avec Pixel / Learn with Pixel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;800&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
@@ -58,20 +58,23 @@
     padding:10px 16px;
     margin-bottom:16px;
     color:#fff;
+    flex-wrap:wrap;
+    gap:8px;
   }
   .topbar .brand{ display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.15rem;}
   .topbar .brand span.emoji{ font-size:1.6rem; }
-  .topbar .right{ display:flex; align-items:center; gap:14px; }
+  .topbar .right{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .star-pill{
     background:var(--yellow); color:#4d3b00; font-weight:800;
     padding:6px 14px; border-radius:999px; display:flex; align-items:center; gap:6px;
     font-size:1rem;
   }
-  .home-btn, .reset-btn{
+  .home-btn, .reset-btn, .lang-btn{
     background:transparent; border:2px solid rgba(255,255,255,0.4); color:#fff;
     border-radius:14px; padding:8px 12px; font-weight:700; font-size:0.95rem;
   }
-  .home-btn:hover, .reset-btn:hover{ background:rgba(255,255,255,0.15); }
+  .home-btn:hover, .reset-btn:hover, .lang-btn:hover{ background:rgba(255,255,255,0.15); }
+  .lang-btn{ font-weight:800; min-width:52px; }
 
   .screen{ display:none; }
   .screen.active{ display:block; animation:fadeUp .35s ease; }
@@ -112,111 +115,9 @@
     font-weight:800; color:#fff; font-size:1rem;
   }
 
-  /* ---- COMMON SCREEN CHROME ---- */
-  .panel{
-    background:var(--card); border-radius:var(--radius); padding:20px;
-    box-shadow:0 10px 26px rgba(0,0,0,0.25); margin-bottom:16px;
-  }
-  .panel h2{ margin-top:0; }
-  .subnav{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
-  .subnav button{
-    border:2px solid #e3e1f7; background:#f7f6ff; color:var(--ink);
-    padding:8px 14px; border-radius:14px; font-weight:800; font-size:0.9rem;
-  }
-  .subnav button.active{ background:var(--violet); color:#fff; border-color:var(--violet); }
-
-  /* ---- LETTER / SYLLABLE TILES ---- */
-  .tiles-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(72px,1fr)); gap:10px; }
-  .tile{
-    background:#f7f6ff; border:2px solid #e3e1f7; border-radius:16px;
-    padding:12px 4px; text-align:center; font-weight:800; font-size:1.4rem;
-    display:flex; flex-direction:column; align-items:center; gap:2px;
-    min-height:74px;
-  }
-  .tile.seen{ background:linear-gradient(160deg,#fff6d6,#ffe9a3); border-color:var(--yellow); }
-  .tile small{ font-size:0.6rem; color:var(--ink-soft); font-weight:700; }
-  .tile.selected{ outline:3px solid var(--coral); }
-
-  .word-under{ text-align:center; margin-top:10px; font-size:1.1rem; font-weight:700; min-height:1.6em;}
-
-  /* ---- GAME CARD (mots-images / chiffres) ---- */
-  .game-stage{ text-align:center; }
-  .game-stage .prompt{ font-size:1.05rem; font-weight:700; color:var(--ink-soft); margin-bottom:10px;}
-  .big-emoji-row{ font-size:2.6rem; letter-spacing:4px; margin:10px 0 18px; }
-  .options-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-  .option-btn{
-    background:#f7f6ff; border:2px solid #e3e1f7; border-radius:16px;
-    padding:14px 22px; font-weight:800; font-size:1.15rem; min-width:90px;
-  }
-  .option-btn.correct{ background:var(--green); border-color:var(--green); color:#fff; }
-  .option-btn.wrong{ background:#ffd8d8; border-color:var(--coral); }
-  .feedback-msg{ min-height:1.6em; font-weight:800; margin-top:12px; font-size:1.05rem; }
-  .feedback-msg.good{ color:#2c8a3d; }
-  .feedback-msg.retry{ color:var(--coral); }
-
-  /* ---- ECRITURE ---- */
-  .canvas-wrap{ display:flex; flex-direction:column; align-items:center; gap:10px; }
-  canvas#traceCanvas{
-    background:#fbfbff; border:3px dashed #d8d5f5; border-radius:20px;
-    touch-action:none; width:100%; max-width:320px; height:320px;
-  }
-  .canvas-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
-  .canvas-actions button{
-    border:none; border-radius:14px; padding:10px 16px; font-weight:800; color:#fff; font-size:0.95rem;
-  }
-
-  /* ---- IA MODULE ---- */
-  .ia-card{
-    background:linear-gradient(160deg,#fff,#f3f1ff); border-radius:20px; padding:20px;
-    min-height:160px; display:flex; flex-direction:column; justify-content:center; gap:10px;
-    border:2px solid #e3e1f7;
-  }
-  .ia-card .robot-say{ font-family:'Space Mono', monospace; font-size:1.02rem; line-height:1.4; }
-  .ia-nav{ display:flex; justify-content:space-between; margin-top:12px; }
-  .ia-nav button{ border:none; border-radius:14px; padding:10px 18px; font-weight:800; color:#fff; background:var(--violet); }
-  .bucket-row{ display:flex; gap:16px; justify-content:center; margin-top:16px; }
-  .bucket-btn{
-    flex:1; max-width:160px; border:none; border-radius:18px; padding:18px 8px;
-    font-weight:800; font-size:1.05rem; color:#fff;
-  }
-  .brain-meter{ background:#eee; border-radius:999px; height:16px; overflow:hidden; margin:14px 0 4px; }
-  .brain-fill{ height:100%; background:linear-gradient(90deg, var(--teal), var(--violet)); transition:width .4s ease; }
-  .job-cards{ display:grid; grid-template-columns:1fr; gap:12px; }
-  @media(min-width:640px){ .job-cards{ grid-template-columns:1fr 1fr; } }
-  .job-card{ background:#f7f6ff; border-radius:16px; padding:16px; border:2px solid #e3e1f7; }
-  .job-card .job-emoji{ font-size:1.8rem; }
-
-  /* ---- PIXEL COMPANION ---- */
-  #pixel-companion{
-    position:fixed; right:14px; bottom:14px; z-index:5;
-    display:flex; flex-direction:column; align-items:flex-end; gap:6px;
-  }
-  #pixel-bubble{
-    max-width:220px; background:#fff; border-radius:16px; padding:10px 14px;
-    font-weight:700; font-size:0.85rem; box-shadow:0 8px 18px rgba(0,0,0,0.25);
-    display:none;
-  }
-  #pixel-bubble.show{ display:block; animation:fadeUp .3s ease; }
-  #pixel-avatar-btn{
-    background:var(--violet); border:none; border-radius:50%; width:60px; height:60px;
-    font-size:1.8rem; box-shadow:0 8px 18px rgba(0,0,0,0.3); color:#fff;
-  }
-
-  .confetti-piece{
-    position:fixed; top:-10px; width:8px; height:8px; z-index:20; border-radius:2px;
-    animation:fall linear forwards;
-  }
-  @keyframes fall{ to{ transform:translateY(105vh) rotate(360deg); opacity:0.9; } }
-
-  .sound-btn{
-    background:var(--teal); border:none; color:#fff; border-radius:12px; padding:6px 10px; font-weight:800; font-size:0.85rem;
-  }
-  .tip-note{ font-size:0.85rem; color:var(--ink-soft); font-weight:600; margin-top:8px; }
-
-  /* ---- REWARDS ---- */
   .reward-card{
     background:linear-gradient(160deg,#fff8e0,#ffe9a3); border:3px solid var(--yellow);
-    border-radius:24px; padding:16px 18px; margin-bottom:20px;
+    border-radius:24px; padding:16px 18px; margin:20px 0;
     display:flex; align-items:center; gap:14px; box-shadow:0 10px 24px rgba(0,0,0,0.2);
   }
   .reward-card .gift-emoji{ font-size:2.2rem; }
@@ -229,7 +130,6 @@
   }
   .gear-btn:hover{ background:rgba(255,255,255,0.15); }
 
-  /* ---- MODAL (celebration + parent settings) ---- */
   .modal-overlay{
     position:fixed; inset:0; background:rgba(20,15,50,0.72); z-index:50;
     display:none; align-items:center; justify-content:center; padding:20px;
@@ -256,7 +156,111 @@
     border:none; border-radius:14px; padding:10px 16px; font-weight:800; color:#fff; margin:6px 4px 0;
   }
 
-  /* ---- CHASSE AUX LETTRES ---- */
+  .panel{
+    background:var(--card); border-radius:var(--radius); padding:20px;
+    box-shadow:0 10px 26px rgba(0,0,0,0.25); margin-bottom:16px;
+  }
+  .panel h2{ margin-top:0; }
+  .subnav{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .subnav button{
+    border:2px solid #e3e1f7; background:#f7f6ff; color:var(--ink);
+    padding:8px 14px; border-radius:14px; font-weight:800; font-size:0.9rem;
+  }
+  .subnav button.active{ background:var(--violet); color:#fff; border-color:var(--violet); }
+
+  .tiles-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(72px,1fr)); gap:10px; }
+  .tile{
+    background:#f7f6ff; border:2px solid #e3e1f7; border-radius:16px;
+    padding:12px 4px; text-align:center; font-weight:800; font-size:1.4rem;
+    display:flex; flex-direction:column; align-items:center; gap:2px;
+    min-height:74px;
+  }
+  .tile.seen{ background:linear-gradient(160deg,#fff6d6,#ffe9a3); border-color:var(--yellow); }
+  .tile small{ font-size:0.6rem; color:var(--ink-soft); font-weight:700; }
+  .tile.selected{ outline:3px solid var(--coral); }
+
+  .word-under{ text-align:center; margin-top:10px; font-size:1.1rem; font-weight:700; min-height:1.6em;}
+
+  .game-stage{ text-align:center; }
+  .game-stage .prompt{ font-size:1.05rem; font-weight:700; color:var(--ink-soft); margin-bottom:10px;}
+  .big-emoji-row{
+    font-size:clamp(1.5rem, 7vw, 2.6rem);
+    letter-spacing:2px;
+    margin:10px 0 18px;
+    max-width:100%;
+    overflow-wrap:break-word;
+    word-break:break-all;
+    white-space:normal;
+    line-height:1.5;
+    padding:0 4px;
+  }
+  .options-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .option-btn{
+    background:#f7f6ff; border:2px solid #e3e1f7; border-radius:16px;
+    padding:14px 22px; font-weight:800; font-size:1.15rem; min-width:90px;
+  }
+  .option-btn.correct{ background:var(--green); border-color:var(--green); color:#fff; }
+  .option-btn.wrong{ background:#ffd8d8; border-color:var(--coral); }
+  .feedback-msg{ min-height:1.6em; font-weight:800; margin-top:12px; font-size:1.05rem; }
+  .feedback-msg.good{ color:#2c8a3d; }
+  .feedback-msg.retry{ color:var(--coral); }
+
+  .canvas-wrap{ display:flex; flex-direction:column; align-items:center; gap:10px; }
+  canvas#traceCanvas{
+    background:#fbfbff; border:3px dashed #d8d5f5; border-radius:20px;
+    touch-action:none; width:100%; max-width:320px; height:320px;
+  }
+  .canvas-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  .canvas-actions button{
+    border:none; border-radius:14px; padding:10px 16px; font-weight:800; color:#fff; font-size:0.95rem;
+  }
+
+  .ia-card{
+    background:linear-gradient(160deg,#fff,#f3f1ff); border-radius:20px; padding:20px;
+    min-height:160px; display:flex; flex-direction:column; justify-content:center; gap:10px;
+    border:2px solid #e3e1f7;
+  }
+  .ia-card .robot-say{ font-family:'Space Mono', monospace; font-size:1.02rem; line-height:1.4; }
+  .ia-nav{ display:flex; justify-content:space-between; margin-top:12px; }
+  .ia-nav button{ border:none; border-radius:14px; padding:10px 18px; font-weight:800; color:#fff; background:var(--violet); }
+  .bucket-row{ display:flex; gap:16px; justify-content:center; margin-top:16px; }
+  .bucket-btn{
+    flex:1; max-width:160px; border:none; border-radius:18px; padding:18px 8px;
+    font-weight:800; font-size:1.05rem; color:#fff;
+  }
+  .brain-meter{ background:#eee; border-radius:999px; height:16px; overflow:hidden; margin:14px 0 4px; }
+  .brain-fill{ height:100%; background:linear-gradient(90deg, var(--teal), var(--violet)); transition:width .4s ease; }
+  .job-cards{ display:grid; grid-template-columns:1fr; gap:12px; }
+  @media(min-width:640px){ .job-cards{ grid-template-columns:1fr 1fr; } }
+  .job-card{ background:#f7f6ff; border-radius:16px; padding:16px; border:2px solid #e3e1f7; }
+  .job-card .job-emoji{ font-size:1.8rem; }
+
+  #pixel-companion{
+    position:fixed; right:14px; bottom:14px; z-index:5;
+    display:flex; flex-direction:column; align-items:flex-end; gap:6px;
+  }
+  #pixel-bubble{
+    max-width:220px; background:#fff; border-radius:16px; padding:10px 14px;
+    font-weight:700; font-size:0.85rem; box-shadow:0 8px 18px rgba(0,0,0,0.25);
+    display:none;
+  }
+  #pixel-bubble.show{ display:block; animation:fadeUp .3s ease; }
+  #pixel-avatar-btn{
+    background:var(--violet); border:none; border-radius:50%; width:60px; height:60px;
+    font-size:1.8rem; box-shadow:0 8px 18px rgba(0,0,0,0.3); color:#fff;
+  }
+
+  .confetti-piece{
+    position:fixed; top:-10px; width:8px; height:8px; z-index:20; border-radius:2px;
+    animation:fall linear forwards;
+  }
+  @keyframes fall{ to{ transform:translateY(105vh) rotate(360deg); opacity:0.9; } }
+
+  .sound-btn{
+    background:var(--teal); border:none; color:#fff; border-radius:12px; padding:6px 10px; font-weight:800; font-size:0.85rem;
+  }
+  .tip-note{ font-size:0.85rem; color:var(--ink-soft); font-weight:600; margin-top:8px; }
+
   .hunt-scene{
     position:relative; height:280px; border-radius:20px; overflow:hidden; margin-top:10px;
     background:linear-gradient(180deg,#bff0c9 0%, #8fdba0 60%, #6fc789 100%);
@@ -273,7 +277,6 @@
   @keyframes popOut{ to{ transform:scale(0); opacity:0; } }
   .hunt-progress{ margin-top:10px; }
 
-  /* ---- ROBOTIQUE / MAZE ---- */
   .maze-wrap{ display:flex; flex-direction:column; align-items:center; gap:14px; }
   .level-row{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
   .level-btn{
@@ -301,7 +304,6 @@
   .maze-cell.coin.collected{ background:#fbfbff; }
   .level-btn.random-btn{ background:linear-gradient(135deg,#FF9F5A,#FF6B6B); color:#fff; border-color:transparent; }
 
-  /* ---- CONTES (stories) ---- */
   .story-cover-grid{ display:grid; grid-template-columns:1fr; gap:14px; }
   @media(min-width:640px){ .story-cover-grid{ grid-template-columns:1fr 1fr; } }
   .story-cover-card{
@@ -326,6 +328,21 @@
   .lesson-box h4{ margin:0 0 6px; color:#5a4400; }
   .lesson-box p{ margin:0 0 8px; color:#5a4400; font-weight:600; }
   .back-lib-btn{ border:none; border-radius:14px; padding:10px 18px; font-weight:800; color:#fff; background:#FF9F5A; margin-top:6px; }
+
+  /* ---- LANGUES DU MONDE ---- */
+  .phrase-list{ display:flex; flex-direction:column; gap:12px; }
+  .phrase-card{
+    background:#f7f6ff; border:2px solid #e3e1f7; border-radius:18px; padding:14px 16px;
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .phrase-fr{ font-weight:700; color:var(--ink-soft); font-size:0.95rem; }
+  .phrase-target{ font-weight:800; font-size:1.25rem; color:var(--ink); }
+  .phrase-target.rtl{ direction:rtl; text-align:right; font-size:1.4rem; }
+  .phrase-translit{ font-style:italic; color:var(--ink-soft); font-size:0.85rem; }
+  .phrase-actions{ display:flex; gap:8px; margin-top:4px; flex-wrap:wrap; }
+  .phrase-actions button{
+    border:none; border-radius:10px; padding:7px 12px; font-weight:800; color:#fff; font-size:0.82rem;
+  }
 </style>
 </head>
 <body>
@@ -333,10 +350,11 @@
 <div id="app">
 
   <header class="topbar">
-    <div class="brand"><span class="emoji">🤖</span> Apprends avec Pixel</div>
+    <div class="brand"><span class="emoji">🤖</span> <span data-i18n="brand">Apprends avec Pixel</span></div>
     <div class="right">
       <div class="star-pill">⭐ <span id="starCount">0</span></div>
-      <button class="home-btn" onclick="showScreen('home')">🏠 Accueil</button>
+      <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">EN</button>
+      <button class="home-btn" onclick="showScreen('home')" data-i18n="navHome">🏠 Accueil</button>
       <button class="gear-btn" onclick="openParentModal()" title="Réglages parent">⚙️</button>
       <button class="reset-btn" onclick="resetProgress()">↺</button>
     </div>
@@ -346,48 +364,56 @@
   <section id="home" class="screen active">
     <div class="pixel-hero">
       <div id="robotSvgWrap"></div>
-      <h1>Salut, moi c'est Pixel !</h1>
-      <p class="sub">Gagne des étoiles pour m'aider à grandir et à devenir un super robot !</p>
+      <h1 data-i18n="heroTitle">Salut, moi c'est Pixel !</h1>
+      <p class="sub" data-i18n="heroSub">Gagne des étoiles pour m'aider à grandir et à devenir un super robot !</p>
       <div class="robot-stage-label" id="stageLabel">Petit robot débutant</div>
     </div>
 
     <div class="modules-grid">
       <div class="module-card">
         <div class="icon">📖</div>
-        <h3>Lecture</h3>
-        <p>Les lettres, leurs sons, et les premiers mots.</p>
+        <h3 data-i18n="cardLectureTitle">Lecture</h3>
+        <p data-i18n="cardLectureDesc">Les lettres, leurs sons, et les premiers mots.</p>
         <div class="progress-track"><div class="progress-fill" id="prog-lecture" style="width:0%;background:var(--coral);"></div></div>
-        <button class="enter" style="background:var(--coral);" onclick="showScreen('module-lecture')">Commencer</button>
+        <button class="enter" style="background:var(--coral);" onclick="showScreen('module-lecture')" data-i18n="btnStart">Commencer</button>
       </div>
       <div class="module-card">
         <div class="icon">✏️</div>
-        <h3>Écriture</h3>
-        <p>Trace les lettres majuscules et minuscules.</p>
+        <h3 data-i18n="cardEcritureTitle">Écriture</h3>
+        <p data-i18n="cardEcritureDesc">Trace les lettres majuscules et minuscules.</p>
         <div class="progress-track"><div class="progress-fill" id="prog-ecriture" style="width:0%;background:var(--teal);"></div></div>
-        <button class="enter" style="background:var(--teal);" onclick="showScreen('module-ecriture')">Commencer</button>
+        <button class="enter" style="background:var(--teal);" onclick="showScreen('module-ecriture')" data-i18n="btnStart">Commencer</button>
       </div>
       <div class="module-card">
         <div class="icon">🔢</div>
-        <h3>Chiffres</h3>
-        <p>Compter, reconnaître les nombres, additionner.</p>
+        <h3 data-i18n="cardChiffresTitle">Chiffres</h3>
+        <p data-i18n="cardChiffresDesc">Compter, reconnaître les nombres, additionner.</p>
         <div class="progress-track"><div class="progress-fill" id="prog-chiffres" style="width:0%;background:var(--green);"></div></div>
-        <button class="enter" style="background:var(--green);" onclick="showScreen('module-chiffres')">Commencer</button>
+        <button class="enter" style="background:var(--green);" onclick="showScreen('module-chiffres')" data-i18n="btnStart">Commencer</button>
       </div>
       <div class="module-card">
         <div class="icon">🧠</div>
-        <h3>Découverte IA</h3>
-        <p>Découvre les robots intelligents avec Pixel.</p>
+        <h3 data-i18n="cardIaTitle">Découverte IA</h3>
+        <p data-i18n="cardIaDesc">Découvre les robots intelligents avec Pixel.</p>
         <div class="progress-track"><div class="progress-fill" id="prog-ia" style="width:0%;background:var(--violet);"></div></div>
-        <button class="enter" style="background:var(--violet);" onclick="showScreen('module-ia')">Commencer</button>
+        <button class="enter" style="background:var(--violet);" onclick="showScreen('module-ia')" data-i18n="btnStart">Commencer</button>
       </div>
       <div class="module-card">
         <div class="icon">📚</div>
-        <h3>Contes de Pixel</h3>
-        <p>Des histoires à écouter tout seul, avec une leçon à la fin.</p>
+        <h3 data-i18n="cardContesTitle">Contes de Pixel</h3>
+        <p data-i18n="cardContesDesc">Des histoires à écouter tout seul, avec une leçon à la fin.</p>
         <div class="progress-track"><div class="progress-fill" id="prog-contes" style="width:0%;background:#FF9F5A;"></div></div>
-        <button class="enter" style="background:#FF9F5A;" onclick="showScreen('module-contes'); backToLibrary();">Commencer</button>
+        <button class="enter" style="background:#FF9F5A;" onclick="showScreen('module-contes'); backToLibrary();" data-i18n="btnStart">Commencer</button>
+      </div>
+      <div class="module-card">
+        <div class="icon">🌍</div>
+        <h3 data-i18n="cardLanguesTitle">Langues du monde</h3>
+        <p data-i18n="cardLanguesDesc">Des mots et phrases simples en italien, allemand, chinois, arabe, espagnol et portugais.</p>
+        <div class="progress-track"><div class="progress-fill" id="prog-langues" style="width:0%;background:#3FA9F5;"></div></div>
+        <button class="enter" style="background:#3FA9F5;" onclick="showScreen('module-langues'); setLanguesTab('it');" data-i18n="btnStart">Commencer</button>
       </div>
     </div>
+
     <div class="reward-card" id="rewardCard">
       <div class="gift-emoji">🎁</div>
       <div class="reward-text">
@@ -396,28 +422,28 @@
       </div>
     </div>
 
-    <p class="tip-note">💡 Astuce : les progrès sont sauvegardés dans ce navigateur. Utilise toujours le même appareil et le même navigateur pour retrouver les étoiles.</p>
+    <p class="tip-note" data-i18n="tipNote">💡 Astuce : les progrès sont sauvegardés dans ce navigateur. Utilise toujours le même appareil et le même navigateur pour retrouver les étoiles.</p>
   </section>
 
   <!-- ============ LECTURE ============ -->
   <section id="module-lecture" class="screen">
     <div class="subnav">
-      <button class="active" data-sub="alphabet" onclick="setLectureTab('alphabet')">🔤 Découverte</button>
-      <button data-sub="chasse" onclick="setLectureTab('chasse')">🎯 Chasse aux lettres</button>
-      <button data-sub="syllabes" onclick="setLectureTab('syllabes')">🧩 Syllabes</button>
-      <button data-sub="mots" onclick="setLectureTab('mots')">🖼️ Mots &amp; images</button>
+      <button class="active" data-sub="alphabet" onclick="setLectureTab('alphabet')" data-i18n="tabDecouverte">🔤 Découverte</button>
+      <button data-sub="chasse" onclick="setLectureTab('chasse')" data-i18n="tabChasse">🎯 Chasse aux lettres</button>
+      <button data-sub="syllabes" onclick="setLectureTab('syllabes')" data-i18n="tabSyllabes">🧩 Syllabes</button>
+      <button data-sub="mots" onclick="setLectureTab('mots')" data-i18n="tabMots">🖼️ Mots &amp; images</button>
     </div>
 
     <div class="panel" id="lecture-alphabet">
-      <h2>L'alphabet</h2>
-      <p>Touche une lettre pour entendre son nom et un mot qui commence pareil.</p>
+      <h2 data-i18n="alphaTitle">L'alphabet</h2>
+      <p data-i18n="alphaDesc">Touche une lettre pour entendre son nom et un mot qui commence pareil.</p>
       <div class="tiles-grid" id="alphaGrid"></div>
       <div class="word-under" id="alphaWord"></div>
     </div>
 
     <div class="panel" id="lecture-chasse" style="display:none;">
-      <h2>🌲 La forêt des lettres perdues</h2>
-      <p>Pixel a perdu des lettres dans la forêt magique ! Écoute bien le son, puis attrape la bonne lettre avant qu'elle ne s'échappe.</p>
+      <h2 data-i18n="huntTitle">🌲 La forêt des lettres perdues</h2>
+      <p data-i18n="huntDesc">Pixel a perdu des lettres dans la forêt magique ! Écoute bien le son, puis attrape la bonne lettre avant qu'elle ne s'échappe.</p>
       <div class="hunt-target-banner" id="huntBanner">Trouve la lettre...</div>
       <div class="hunt-scene" id="huntScene"></div>
       <div class="hunt-progress">
@@ -427,8 +453,8 @@
     </div>
 
     <div class="panel" id="lecture-syllabes" style="display:none;">
-      <h2>Construis une syllabe</h2>
-      <p>Touche une consonne, puis une voyelle, pour former et écouter une syllabe.</p>
+      <h2 data-i18n="syllTitle">Construis une syllabe</h2>
+      <p data-i18n="syllDesc">Touche une consonne, puis une voyelle, pour former et écouter une syllabe.</p>
       <div class="tiles-grid" id="consGrid"></div>
       <div style="height:12px;"></div>
       <div class="tiles-grid" id="voyGrid"></div>
@@ -436,9 +462,9 @@
     </div>
 
     <div class="panel" id="lecture-mots" style="display:none;">
-      <h2>Mots et images</h2>
+      <h2 data-i18n="motsTitle">Mots et images</h2>
       <div class="game-stage">
-        <div class="prompt">Quel mot correspond à l'image ?</div>
+        <div class="prompt" data-i18n="motsPrompt">Quel mot correspond à l'image ?</div>
         <div class="big-emoji-row" id="motsEmoji">🍎</div>
         <div class="options-row" id="motsOptions"></div>
         <div class="feedback-msg" id="motsFeedback"></div>
@@ -449,18 +475,18 @@
   <!-- ============ ECRITURE ============ -->
   <section id="module-ecriture" class="screen">
     <div class="panel">
-      <h2>Trace les lettres</h2>
+      <h2 data-i18n="ecritureTitle">Trace les lettres</h2>
       <div class="subnav">
-        <button class="active" data-case="maj" onclick="setEcritureCase('maj')">Majuscules</button>
-        <button data-case="min" onclick="setEcritureCase('min')">minuscules</button>
+        <button class="active" data-case="maj" onclick="setEcritureCase('maj')" data-i18n="tabMaj">Majuscules</button>
+        <button data-case="min" onclick="setEcritureCase('min')" data-i18n="tabMin">minuscules</button>
       </div>
       <div class="tiles-grid" id="ecritureGrid"></div>
       <div style="height:14px;"></div>
       <div class="canvas-wrap">
         <canvas id="traceCanvas" width="320" height="320"></canvas>
         <div class="canvas-actions">
-          <button style="background:var(--teal);" onclick="clearCanvas()">🧽 Effacer</button>
-          <button style="background:var(--green);" onclick="finishTrace()">✅ J'ai fini !</button>
+          <button style="background:var(--teal);" onclick="clearCanvas()" data-i18n="btnEffacer">🧽 Effacer</button>
+          <button style="background:var(--green);" onclick="finishTrace()" data-i18n="btnFini">✅ J'ai fini !</button>
         </div>
         <div class="feedback-msg" id="traceFeedback"></div>
       </div>
@@ -470,9 +496,9 @@
   <!-- ============ CHIFFRES ============ -->
   <section id="module-chiffres" class="screen">
     <div class="subnav">
-      <button class="active" data-clevel="c1" onclick="setChiffresTab('c1')">1 à 10</button>
-      <button data-clevel="c2" onclick="setChiffresTab('c2')">11 à 20</button>
-      <button data-clevel="add" onclick="setChiffresTab('add')">Additions</button>
+      <button class="active" data-clevel="c1" onclick="setChiffresTab('c1')" data-i18n="tab1a10">1 à 10</button>
+      <button data-clevel="c2" onclick="setChiffresTab('c2')" data-i18n="tab11a20">11 à 20</button>
+      <button data-clevel="add" onclick="setChiffresTab('add')" data-i18n="tabAdditions">Additions</button>
     </div>
     <div class="panel">
       <h2 id="chiffresTitle">Combien en vois-tu ?</h2>
@@ -487,11 +513,11 @@
   <!-- ============ IA ============ -->
   <section id="module-ia" class="screen">
     <div class="subnav">
-      <button class="active" data-ia="intro" onclick="setIaTab('intro')">🤔 C'est quoi l'IA ?</button>
-      <button data-ia="train" onclick="setIaTab('train')">🎓 Entraîne Pixel</button>
-      <button data-ia="facts" onclick="setIaTab('facts')">✨ Le sais-tu ?</button>
-      <button data-ia="jobs" onclick="setIaTab('jobs')">👩‍💻 Les métiers</button>
-      <button data-ia="robot" onclick="setIaTab('robot')">🕹️ Programme Pixel</button>
+      <button class="active" data-ia="intro" onclick="setIaTab('intro')" data-i18n="tabIntro">🤔 C'est quoi l'IA ?</button>
+      <button data-ia="train" onclick="setIaTab('train')" data-i18n="tabTrain">🎓 Entraîne Pixel</button>
+      <button data-ia="facts" onclick="setIaTab('facts')" data-i18n="tabFacts">✨ Le sais-tu ?</button>
+      <button data-ia="jobs" onclick="setIaTab('jobs')" data-i18n="tabJobs">👩‍💻 Les métiers</button>
+      <button data-ia="robot" onclick="setIaTab('robot')" data-i18n="tabRobot">🕹️ Programme Pixel</button>
     </div>
 
     <div class="panel" id="ia-intro">
@@ -499,14 +525,14 @@
         <div class="robot-say" id="introText"></div>
       </div>
       <div class="ia-nav">
-        <button onclick="introPrev()">◀ Précédent</button>
-        <button onclick="introNext()" id="introNextBtn">Suivant ▶</button>
+        <button onclick="introPrev()" data-i18n="navPrev">◀ Précédent</button>
+        <button onclick="introNext()" id="introNextBtn" data-i18n="navNext">Suivant ▶</button>
       </div>
     </div>
 
     <div class="panel" id="ia-train" style="display:none;">
-      <h2>Entraîne Pixel à trier</h2>
-      <p>Aide Pixel à ranger le bon élément dans le bon panier. Plus tu l'aides, plus il apprend vite !</p>
+      <h2 data-i18n="trainTitle">Entraîne Pixel à trier</h2>
+      <p data-i18n="trainDesc">Aide Pixel à ranger le bon élément dans le bon panier. Plus tu l'aides, plus il apprend vite !</p>
       <div class="ia-card" style="text-align:center;">
         <div style="font-size:2.6rem;" id="trainEmoji">🍎</div>
       </div>
@@ -520,19 +546,19 @@
         <div class="robot-say" id="factText"></div>
       </div>
       <div class="ia-nav">
-        <button onclick="factPrev()">◀ Précédent</button>
-        <button onclick="factNext()">Suivant ▶</button>
+        <button onclick="factPrev()" data-i18n="navPrev">◀ Précédent</button>
+        <button onclick="factNext()" data-i18n="navNext">Suivant ▶</button>
       </div>
     </div>
 
     <div class="panel" id="ia-jobs" style="display:none;">
-      <h2>Qui crée les robots intelligents ?</h2>
+      <h2 data-i18n="jobsTitle">Qui crée les robots intelligents ?</h2>
       <div class="job-cards" id="jobsGrid"></div>
     </div>
 
     <div class="panel" id="ia-robot" style="display:none;">
-      <h2>Deviens roboticien(ne) le temps d'un jeu !</h2>
-      <p>Choisis des commandes pour dire à Pixel où aller, puis appuie sur « Lancer Pixel ! ». C'est exactement comme ça que les vrais robots sont programmés !</p>
+      <h2 data-i18n="robotTitle">Deviens roboticien(ne) le temps d'un jeu !</h2>
+      <p data-i18n="robotDesc">Choisis des commandes pour dire à Pixel où aller, puis appuie sur « Lancer Pixel ! ». C'est exactement comme ça que les vrais robots sont programmés !</p>
       <div class="maze-wrap">
         <div class="level-row" id="levelRow"></div>
         <div class="maze-stage">
@@ -541,14 +567,14 @@
         </div>
         <div class="program-row" id="programRow"></div>
         <div class="block-row">
-          <button class="block-btn" style="background:var(--teal);" onclick="addBlock('forward')">⬆️ Avancer</button>
-          <button class="block-btn" style="background:var(--violet);" onclick="addBlock('left')">↩️ Gauche</button>
-          <button class="block-btn" style="background:var(--coral);" onclick="addBlock('right')">↪️ Droite</button>
+          <button class="block-btn" style="background:var(--teal);" onclick="addBlock('forward')" data-i18n="blockForward">⬆️ Avancer</button>
+          <button class="block-btn" style="background:var(--violet);" onclick="addBlock('left')" data-i18n="blockLeft">↩️ Gauche</button>
+          <button class="block-btn" style="background:var(--coral);" onclick="addBlock('right')" data-i18n="blockRight">↪️ Droite</button>
         </div>
         <div class="maze-actions">
-          <button style="background:#aaa;" onclick="undoBlock()">⬅️ Effacer dernier</button>
-          <button style="background:#aaa;" onclick="clearProgram()">🧽 Tout effacer</button>
-          <button style="background:var(--green);" onclick="runProgram()">▶️ Lancer Pixel !</button>
+          <button style="background:#aaa;" onclick="undoBlock()" data-i18n="btnUndo">⬅️ Effacer dernier</button>
+          <button style="background:#aaa;" onclick="clearProgram()" data-i18n="btnClearAll">🧽 Tout effacer</button>
+          <button style="background:var(--green);" onclick="runProgram()" data-i18n="btnRun">▶️ Lancer Pixel !</button>
         </div>
         <div class="feedback-msg" id="mazeFeedback"></div>
       </div>
@@ -558,8 +584,8 @@
   <!-- ============ CONTES ============ -->
   <section id="module-contes" class="screen">
     <div class="panel" id="contes-library">
-      <h2>📚 La bibliothèque de Pixel</h2>
-      <p>Choisis une histoire, écoute-la toute seule ou tout seul, et découvre la leçon à la fin !</p>
+      <h2 data-i18n="libTitle">📚 La bibliothèque de Pixel</h2>
+      <p data-i18n="libDesc">Choisis une histoire, écoute-la toute seule ou tout seul, et découvre la leçon à la fin !</p>
       <div class="story-cover-grid" id="storyCoverGrid"></div>
     </div>
 
@@ -568,10 +594,10 @@
         <div class="story-emoji-big" id="storyEmoji">📖</div>
         <div class="story-text" id="storyText"></div>
         <div class="story-dots" id="storyDots"></div>
-        <button class="sound-btn" onclick="replayStoryPage()">🔊 Réécouter</button>
+        <button class="sound-btn" onclick="replayStoryPage()" data-i18n="btnReplay">🔊 Réécouter</button>
         <div class="story-nav">
-          <button onclick="storyPrev()">◀ Précédent</button>
-          <button onclick="storyNext()" id="storyNextBtn">Suivant ▶</button>
+          <button onclick="storyPrev()" data-i18n="navPrev">◀ Précédent</button>
+          <button onclick="storyNext()" id="storyNextBtn" data-i18n="navNext">Suivant ▶</button>
         </div>
       </div>
     </div>
@@ -579,14 +605,31 @@
     <div class="panel" id="contes-end" style="display:none;">
       <h2 id="storyEndTitle">Fin de l'histoire</h2>
       <div class="lesson-box">
-        <h4>📋 Résumé</h4>
+        <h4 data-i18n="lblSummary">📋 Résumé</h4>
         <p id="storySummary"></p>
-        <h4>💡 La leçon de cette histoire</h4>
+        <h4 data-i18n="lblLesson">💡 La leçon de cette histoire</h4>
         <p id="storyLesson"></p>
-        <h4>🤔 Et toi ?</h4>
+        <h4 data-i18n="lblQuestion">🤔 Et toi ?</h4>
         <p id="storyQuestion"></p>
       </div>
-      <button class="back-lib-btn" onclick="backToLibrary()">📚 Retour à la bibliothèque</button>
+      <button class="back-lib-btn" onclick="backToLibrary()" data-i18n="btnBackLib">📚 Retour à la bibliothèque</button>
+    </div>
+  </section>
+
+  <!-- ============ LANGUES DU MONDE ============ -->
+  <section id="module-langues" class="screen">
+    <div class="panel">
+      <h2 data-i18n="languesTitle">🌍 Petits mots du monde</h2>
+      <p data-i18n="languesDesc">Écoute des mots et des phrases simples dans une autre langue, toujours à partir du français. Appuie sur 🐢 pour les entendre très lentement.</p>
+      <div class="subnav" id="languesSubnav">
+        <button class="active" data-lg="it" onclick="setLanguesTab('it')">🇮🇹 Italien</button>
+        <button data-lg="de" onclick="setLanguesTab('de')">🇩🇪 Allemand</button>
+        <button data-lg="zh" onclick="setLanguesTab('zh')">🇨🇳 Chinois</button>
+        <button data-lg="ar" onclick="setLanguesTab('ar')">🇸🇦 Arabe</button>
+        <button data-lg="es" onclick="setLanguesTab('es')">🇪🇸 Espagnol</button>
+        <button data-lg="pt" onclick="setLanguesTab('pt')">🇵🇹 Portugais</button>
+      </div>
+      <div class="phrase-list" id="phraseList"></div>
     </div>
   </section>
 
@@ -595,22 +638,22 @@
 <div class="modal-overlay" id="celebrateModal">
   <div class="modal-box celebrate">
     <div style="font-size:2.6rem;">🎉🎁🎉</div>
-    <h2>Récompense débloquée !</h2>
+    <h2 data-i18n="celebrateTitle">Récompense débloquée !</h2>
     <p id="celebrateText" style="font-weight:700;font-size:1.1rem;"></p>
-    <p style="color:var(--ink-soft);font-weight:600;">Va vite le montrer à papa ou maman !</p>
-    <button class="close-btn" onclick="closeCelebrateModal()">Youpi ! ✅</button>
+    <p style="color:var(--ink-soft);font-weight:600;" data-i18n="celebrateSub">Va vite le montrer à papa ou maman !</p>
+    <button class="close-btn" onclick="closeCelebrateModal()" data-i18n="celebrateClose">Youpi ! ✅</button>
   </div>
 </div>
 
 <div class="modal-overlay" id="parentModal">
   <div class="modal-box">
-    <h2>🎁 Réglages parent</h2>
-    <p style="color:var(--ink-soft);font-weight:600;">Définissez ici les cadeaux ou surprises que votre enfant débloquera à chaque palier d'étoiles. Faites-le avec lui pour le motiver encore plus !</p>
+    <h2 data-i18n="parentTitle">🎁 Réglages parent</h2>
+    <p style="color:var(--ink-soft);font-weight:600;" data-i18n="parentDesc">Définissez ici les cadeaux ou surprises que votre enfant débloquera à chaque palier d'étoiles. Faites-le avec lui pour le motiver encore plus !</p>
     <div id="parentRewardsList"></div>
-    <button class="add-reward-btn" style="background:var(--teal);" onclick="addRewardRow()">➕ Ajouter une récompense</button>
+    <button class="add-reward-btn" style="background:var(--teal);" onclick="addRewardRow()" data-i18n="btnAddReward">➕ Ajouter une récompense</button>
     <div>
-      <button class="save-rewards-btn" style="background:var(--green);" onclick="saveRewardsFromModal()">💾 Enregistrer</button>
-      <button class="close-btn" onclick="closeParentModal()">Fermer</button>
+      <button class="save-rewards-btn" style="background:var(--green);" onclick="saveRewardsFromModal()" data-i18n="btnSave">💾 Enregistrer</button>
+      <button class="close-btn" onclick="closeParentModal()" data-i18n="btnClose">Fermer</button>
     </div>
   </div>
 </div>
@@ -622,11 +665,171 @@
 
 <script>
 /* ============================================================
+   I18N
+============================================================ */
+const UI_STRINGS = {
+  brand:{fr:"Apprends avec Pixel", en:"Learn with Pixel"},
+  navHome:{fr:"🏠 Accueil", en:"🏠 Home"},
+  heroTitle:{fr:"Salut, moi c'est Pixel !", en:"Hi, I'm Pixel!"},
+  heroSub:{fr:"Gagne des étoiles pour m'aider à grandir et à devenir un super robot !", en:"Earn stars to help me grow into a super robot!"},
+  cardLectureTitle:{fr:"Lecture", en:"Reading"},
+  cardLectureDesc:{fr:"Les lettres, leurs sons, et les premiers mots.", en:"Letters, their sounds, and first words."},
+  cardEcritureTitle:{fr:"Écriture", en:"Writing"},
+  cardEcritureDesc:{fr:"Trace les lettres majuscules et minuscules.", en:"Trace uppercase and lowercase letters."},
+  cardChiffresTitle:{fr:"Chiffres", en:"Numbers"},
+  cardChiffresDesc:{fr:"Compter, reconnaître les nombres, additionner.", en:"Counting, recognizing numbers, adding."},
+  cardIaTitle:{fr:"Découverte IA", en:"AI Discovery"},
+  cardIaDesc:{fr:"Découvre les robots intelligents avec Pixel.", en:"Discover smart robots with Pixel."},
+  cardContesTitle:{fr:"Contes de Pixel", en:"Pixel's Story Time"},
+  cardContesDesc:{fr:"Des histoires à écouter tout seul, avec une leçon à la fin.", en:"Stories to listen to alone, with a lesson at the end."},
+  cardLanguesTitle:{fr:"Langues du monde", en:"Languages of the World"},
+  cardLanguesDesc:{fr:"Des mots et phrases simples en italien, allemand, chinois, arabe, espagnol et portugais.", en:"Simple words and phrases in Italian, German, Chinese, Arabic, Spanish and Portuguese."},
+  languesTitle:{fr:"🌍 Petits mots du monde", en:"🌍 Little Words of the World"},
+  languesDesc:{fr:"Écoute des mots et des phrases simples dans une autre langue, toujours à partir du français. Appuie sur 🐢 pour les entendre très lentement.", en:"Listen to simple words and phrases in another language, always starting from French. Tap 🐢 to hear them very slowly."},
+  btnListen:{fr:"🔊 Écouter", en:"🔊 Listen"},
+  btnSlow:{fr:"🐢 Lentement", en:"🐢 Slowly"},
+  btnStart:{fr:"Commencer", en:"Start"},
+  tipNote:{fr:"💡 Astuce : les progrès sont sauvegardés dans ce navigateur. Utilise toujours le même appareil et le même navigateur pour retrouver les étoiles.", en:"💡 Tip: progress is saved in this browser. Always use the same device and browser to keep your stars."},
+  tabDecouverte:{fr:"🔤 Découverte", en:"🔤 Discover"},
+  tabChasse:{fr:"🎯 Chasse aux lettres", en:"🎯 Letter Hunt"},
+  tabSyllabes:{fr:"🧩 Syllabes", en:"🧩 Sound Blending"},
+  tabMots:{fr:"🖼️ Mots &amp; images", en:"🖼️ Words &amp; Pictures"},
+  alphaTitle:{fr:"L'alphabet", en:"The Alphabet"},
+  alphaDesc:{fr:"Touche une lettre pour entendre son nom et un mot qui commence pareil.", en:"Tap a letter to hear its name and a word that starts with it."},
+  huntTitle:{fr:"🌲 La forêt des lettres perdues", en:"🌲 The Forest of Lost Letters"},
+  huntDesc:{fr:"Pixel a perdu des lettres dans la forêt magique ! Écoute bien le son, puis attrape la bonne lettre avant qu'elle ne s'échappe.", en:"Pixel lost some letters in the magic forest! Listen to the sound, then catch the right letter before it escapes."},
+  syllTitle:{fr:"Construis une syllabe", en:"Blend the sounds"},
+  syllDesc:{fr:"Touche une consonne, puis une voyelle, pour former et écouter une syllabe.", en:"Tap a consonant, then a vowel, to build and hear a sound blend."},
+  motsTitle:{fr:"Mots et images", en:"Words and Pictures"},
+  motsPrompt:{fr:"Quel mot correspond à l'image ?", en:"Which word matches the picture?"},
+  ecritureTitle:{fr:"Trace les lettres", en:"Trace the letters"},
+  tabMaj:{fr:"Majuscules", en:"Uppercase"},
+  tabMin:{fr:"minuscules", en:"lowercase"},
+  btnEffacer:{fr:"🧽 Effacer", en:"🧽 Clear"},
+  btnFini:{fr:"✅ J'ai fini !", en:"✅ I'm done!"},
+  tab1a10:{fr:"1 à 10", en:"1 to 10"},
+  tab11a20:{fr:"11 à 20", en:"11 to 20"},
+  tabAdditions:{fr:"Additions", en:"Addition"},
+  tabIntro:{fr:"🤔 C'est quoi l'IA ?", en:"🤔 What is AI?"},
+  tabTrain:{fr:"🎓 Entraîne Pixel", en:"🎓 Train Pixel"},
+  tabFacts:{fr:"✨ Le sais-tu ?", en:"✨ Did You Know?"},
+  tabJobs:{fr:"👩‍💻 Les métiers", en:"👩‍💻 The Jobs"},
+  tabRobot:{fr:"🕹️ Programme Pixel", en:"🕹️ Program Pixel"},
+  navPrev:{fr:"◀ Précédent", en:"◀ Previous"},
+  navNext:{fr:"Suivant ▶", en:"Next ▶"},
+  trainTitle:{fr:"Entraîne Pixel à trier", en:"Train Pixel to Sort"},
+  trainDesc:{fr:"Aide Pixel à ranger le bon élément dans le bon panier. Plus tu l'aides, plus il apprend vite !", en:"Help Pixel put each item in the right basket. The more you help, the faster it learns!"},
+  jobsTitle:{fr:"Qui crée les robots intelligents ?", en:"Who creates smart robots?"},
+  robotTitle:{fr:"Deviens roboticien(ne) le temps d'un jeu !", en:"Become a robot engineer for a game!"},
+  robotDesc:{fr:"Choisis des commandes pour dire à Pixel où aller, puis appuie sur « Lancer Pixel ! ». C'est exactement comme ça que les vrais robots sont programmés !", en:"Pick commands to tell Pixel where to go, then press \"Run Pixel!\". This is exactly how real robots are programmed!"},
+  blockForward:{fr:"⬆️ Avancer", en:"⬆️ Forward"},
+  blockLeft:{fr:"↩️ Gauche", en:"↩️ Left"},
+  blockRight:{fr:"↪️ Droite", en:"↪️ Right"},
+  btnUndo:{fr:"⬅️ Effacer dernier", en:"⬅️ Undo last"},
+  btnClearAll:{fr:"🧽 Tout effacer", en:"🧽 Clear all"},
+  btnRun:{fr:"▶️ Lancer Pixel !", en:"▶️ Run Pixel!"},
+  libTitle:{fr:"📚 La bibliothèque de Pixel", en:"📚 Pixel's Library"},
+  libDesc:{fr:"Choisis une histoire, écoute-la toute seule ou tout seul, et découvre la leçon à la fin !", en:"Pick a story, listen to it on your own, and discover the lesson at the end!"},
+  btnReplay:{fr:"🔊 Réécouter", en:"🔊 Listen again"},
+  lblSummary:{fr:"📋 Résumé", en:"📋 Summary"},
+  lblLesson:{fr:"💡 La leçon de cette histoire", en:"💡 The lesson of this story"},
+  lblQuestion:{fr:"🤔 Et toi ?", en:"🤔 What about you?"},
+  btnBackLib:{fr:"📚 Retour à la bibliothèque", en:"📚 Back to the Library"},
+  celebrateTitle:{fr:"Récompense débloquée !", en:"Reward unlocked!"},
+  celebrateSub:{fr:"Va vite le montrer à papa ou maman !", en:"Go show mom or dad right away!"},
+  celebrateClose:{fr:"Youpi ! ✅", en:"Yay! ✅"},
+  parentTitle:{fr:"🎁 Réglages parent", en:"🎁 Parent settings"},
+  parentDesc:{fr:"Définissez ici les cadeaux ou surprises que votre enfant débloquera à chaque palier d'étoiles. Faites-le avec lui pour le motiver encore plus !", en:"Set the gifts or surprises your child will unlock at each star milestone. Do it together for extra motivation!"},
+  btnAddReward:{fr:"➕ Ajouter une récompense", en:"➕ Add a reward"},
+  btnSave:{fr:"💾 Enregistrer", en:"💾 Save"},
+  btnClose:{fr:"Fermer", en:"Close"},
+  storyDone:{fr:"Déjà lu", en:"Already read"},
+  storyTodo:{fr:"À découvrir", en:"To discover"},
+  storyPages:{fr:"pages", en:"pages"},
+  resetConfirm:{fr:"Effacer toutes les étoiles et recommencer à zéro ?", en:"Clear all stars and start over from zero?"},
+  nextRewardPrefix:{fr:"Encore", en:"Just"},
+  nextRewardMid:{fr:"étoile", en:"star"},
+  nextRewardMidPlural:{fr:"étoiles pour :", en:"more to unlock:"},
+  rewardUnlockedTitle:{fr:"Récompense débloquée !", en:"Reward unlocked!"},
+  allRewardsTitle:{fr:"Toutes les récompenses sont débloquées ! 🏆", en:"All rewards unlocked! 🏆"},
+  allRewardsDesc:{fr:"Bravo, quel champion ! Demande à papa ou maman une nouvelle surprise à viser.", en:"Amazing, what a champion! Ask mom or dad for a new surprise to aim for."},
+  noRewardsTitle:{fr:"Aucune récompense définie", en:"No rewards set yet"},
+  noRewardsDesc:{fr:"Un parent peut en ajouter dans les réglages ⚙️.", en:"A parent can add some in settings ⚙️."},
+  pixelGreeting:{fr:"🤖 Coucou, je suis Pixel ! Touche-moi si tu veux un encouragement !", en:"🤖 Hi, I'm Pixel! Tap me for a little encouragement!"},
+  countingTitle:{fr:"Combien en vois-tu ?", en:"How many do you see?"},
+  additionTitle:{fr:"Combien cela fait-il en tout ?", en:"What's the total?"},
+  feedbackGood:{fr:"Bravo ! 🎉", en:"Great job! 🎉"},
+  feedbackRetryWord:{fr:"Presque, réessaie !", en:"Almost, try again!"},
+  feedbackRetryCount:{fr:"Presque, recompte bien !", en:"Almost, count again carefully!"},
+  trainGood:{fr:"Merci, Pixel apprend ! 🧠", en:"Thanks, Pixel is learning! 🧠"},
+  trainWrong:{fr:"Ce n'est pas ça, réessaie !", en:"Not quite, try again!"},
+  bucketFruit:{fr:"🍎 Fruit", en:"🍎 Fruit"},
+  bucketVeg:{fr:"🥕 Légume", en:"🥕 Vegetable"},
+  traceGood:{fr:"Bravo, quelle belle lettre ! 🎉", en:"Great job, what a lovely letter! 🎉"},
+  traceRetry:{fr:"Essaie de tracer par-dessus la lettre transparente !", en:"Try tracing over the faded letter!"},
+  huntBannerPrefix:{fr:'Trouve la lettre qui fait le son', en:'Find the letter that makes the sound'},
+  huntProgress:{fr:"lettres retrouvées", en:"letters found"},
+  mazeGood:{fr:"Bravo, tu as programmé Pixel avec succès ! 🎉", en:"Great job, you programmed Pixel successfully! 🎉"},
+  mazeRetryCoins:{fr:"Presque ! Il manque encore des diamants à récupérer.", en:"Almost! There are still gems left to collect."},
+  mazeRetryTarget:{fr:"Presque ! Essaie une autre suite de commandes.", en:"Almost! Try a different sequence of commands."},
+  levelLabel:{fr:"Niveau", en:"Level"},
+  randomChallenge:{fr:"🎲 Défi surprise", en:"🎲 Surprise Challenge"},
+  storyEndPrefix:{fr:"Fin de :", en:"The End of:"},
+  parentThresholdTitle:{fr:"Étoiles nécessaires", en:"Stars needed"},
+  parentLabelTitle:{fr:"Récompense", en:"Reward"},
+  parentUnlocked:{fr:"Débloqué", en:"Unlocked"},
+  parentLocked:{fr:"Verrouillé", en:"Locked"},
+  newRewardDefault:{fr:"Nouvelle récompense", en:"New reward"}
+};
+let LANG = 'fr';
+function T(key){
+  const entry = UI_STRINGS[key];
+  if(!entry) return key;
+  return entry[LANG] || entry.fr;
+}
+function applyI18nStaticText(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(UI_STRINGS[key]) el.innerHTML = T(key);
+  });
+  document.getElementById('langBtn').textContent = LANG==='fr' ? 'EN' : 'FR';
+}
+function toggleLanguage(){
+  LANG = LANG==='fr' ? 'en' : 'fr';
+  state.lang = LANG;
+  saveState();
+  applyLanguage();
+}
+function applyLanguage(){
+  applyI18nStaticText();
+  renderRewardHome();
+  renderAlphabet();
+  renderSyllables();
+  renderEcritureGrid();
+  drawGuide();
+  if(document.getElementById('lecture-chasse').style.display !== 'none') nextHuntRound();
+  if(document.getElementById('lecture-mots').style.display !== 'none') nextMotItem();
+  if(document.getElementById('module-chiffres').classList.contains('active')){
+    document.getElementById('chiffresTitle').textContent = chiffresTab==='add' ? T('additionTitle') : T('countingTitle');
+    nextChiffresItem();
+  }
+  if(document.getElementById('ia-intro').style.display !== 'none') renderIntro();
+  if(document.getElementById('ia-train').style.display !== 'none'){ renderTrainBuckets(); nextTrainItem(); }
+  if(document.getElementById('ia-facts').style.display !== 'none') renderFact();
+  if(document.getElementById('ia-jobs').style.display !== 'none') renderJobs();
+  if(document.getElementById('ia-robot').style.display !== 'none'){ renderLevelRow(); loadLevelCommon(); }
+  if(document.getElementById('contes-library').style.display !== 'none') renderContesLibrary();
+  if(document.getElementById('contes-reader').style.display !== 'none') renderStoryPage();
+  if(document.getElementById('module-langues').classList.contains('active')) renderPhraseList(currentLangTab);
+}
+
+/* ============================================================
    STATE
 ============================================================ */
 const DEFAULT_STATE = {
+  lang:'fr',
   stars:0,
-  starsByModule:{lecture:0, ecriture:0, chiffres:0, ia:0},
+  starsByModule:{lecture:0, ecriture:0, chiffres:0, ia:0, contes:0},
   lettersSeen:{},
   syllablesSeen:{},
   motsSeen:{},
@@ -641,6 +844,7 @@ const DEFAULT_STATE = {
   roboticsLevelsDone:{},
   roboticsRandomWins:0,
   storiesSeen:{},
+  languesSeen:{it:{}, de:{}, zh:{}, ar:{}, es:{}, pt:{}},
   rewards:[
     {id:1, threshold:10, label:"10 minutes de dessin animé en plus", unlocked:false, given:false},
     {id:2, threshold:25, label:"Un petit jouet surprise", unlocked:false, given:false},
@@ -649,6 +853,7 @@ const DEFAULT_STATE = {
   ]
 };
 let state = loadState();
+LANG = state.lang || 'fr';
 
 function loadState(){
   try{
@@ -664,14 +869,16 @@ function saveState(){
   try{ localStorage.setItem('pixel_progress_v1', JSON.stringify(state)); }catch(e){}
 }
 function resetProgress(){
-  if(confirm("Effacer toutes les étoiles et recommencer à zéro ?")){
+  if(confirm(T('resetConfirm'))){
+    const keepLang = state.lang;
     state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    state.lang = keepLang;
     saveState();
     refreshAll();
   }
 }
 
-const MODULE_TARGETS = {lecture:55, ecriture:30, chiffres:30, ia:40, contes:15};
+const MODULE_TARGETS = {lecture:55, ecriture:30, chiffres:30, ia:40, contes:15, langues:50};
 
 function addStar(moduleKey, n){
   n = n || 1;
@@ -707,7 +914,7 @@ function showNextCelebration(){
   const r = rewardQueue[0];
   document.getElementById('celebrateText').textContent = r.label;
   document.getElementById('celebrateModal').classList.add('show');
-  speak('Bravo ! Tu as débloqué une récompense : ' + r.label);
+  speak((LANG==='fr' ? 'Bravo ! Tu as débloqué une récompense : ' : 'Congratulations! You unlocked a reward: ') + r.label);
 }
 function closeCelebrateModal(){
   document.getElementById('celebrateModal').classList.remove('show');
@@ -722,14 +929,20 @@ function renderRewardHome(){
   if(!titleEl) return;
   if(next){
     const remaining = Math.max(0, next.threshold - state.stars);
-    titleEl.textContent = remaining===0 ? "Récompense débloquée !" : `Encore ${remaining} étoile${remaining>1?'s':''} pour :`;
+    if(remaining===0){
+      titleEl.textContent = T('rewardUnlockedTitle');
+    } else if(LANG==='fr'){
+      titleEl.textContent = `Encore ${remaining} étoile${remaining>1?'s':''} pour :`;
+    } else {
+      titleEl.textContent = `Just ${remaining} more star${remaining>1?'s':''} to unlock:`;
+    }
     descEl.textContent = next.label;
   } else if(sorted.length){
-    titleEl.textContent = "Toutes les récompenses sont débloquées ! 🏆";
-    descEl.textContent = "Bravo, quel champion ! Demande à papa ou maman une nouvelle surprise à viser.";
+    titleEl.textContent = T('allRewardsTitle');
+    descEl.textContent = T('allRewardsDesc');
   } else {
-    titleEl.textContent = "Aucune récompense définie";
-    descEl.textContent = "Un parent peut en ajouter dans les réglages ⚙️.";
+    titleEl.textContent = T('noRewardsTitle');
+    descEl.textContent = T('noRewardsDesc');
   }
 }
 function openParentModal(){
@@ -746,9 +959,9 @@ function renderParentRewardsList(){
     const row = document.createElement('div');
     row.className = 'parent-list-item';
     row.innerHTML = `
-      <input type="number" min="1" value="${r.threshold}" data-id="${r.id}" data-field="threshold" title="Étoiles nécessaires">
-      <input type="text" value="${r.label.replace(/"/g,'&quot;')}" data-id="${r.id}" data-field="label" title="Récompense">
-      <span title="${r.unlocked?'Débloqué':'Verrouillé'}">${r.unlocked?'🔓':'🔒'}</span>
+      <input type="number" min="1" value="${r.threshold}" data-id="${r.id}" data-field="threshold" title="${T('parentThresholdTitle')}">
+      <input type="text" value="${r.label.replace(/"/g,'&quot;')}" data-id="${r.id}" data-field="label" title="${T('parentLabelTitle')}">
+      <span title="${r.unlocked?T('parentUnlocked'):T('parentLocked')}">${r.unlocked?'🔓':'🔒'}</span>
       <button class="del-btn" onclick="deleteReward(${r.id})">🗑️</button>
     `;
     list.appendChild(row);
@@ -756,7 +969,7 @@ function renderParentRewardsList(){
 }
 function addRewardRow(){
   const nextId = Math.max(0, ...state.rewards.map(r=>r.id)) + 1;
-  state.rewards.push({id:nextId, threshold:100, label:"Nouvelle récompense", unlocked:false, given:false});
+  state.rewards.push({id:nextId, threshold:100, label:T('newRewardDefault'), unlocked:false, given:false});
   renderParentRewardsList();
 }
 function deleteReward(id){
@@ -773,7 +986,7 @@ function saveRewardsFromModal(){
       reward.threshold = Math.max(1, Number(inp.value)||1);
       if(state.stars>=reward.threshold) reward.unlocked = true;
     } else {
-      reward.label = inp.value.trim() || "Récompense";
+      reward.label = inp.value.trim() || T('newRewardDefault');
     }
   });
   saveState();
@@ -789,7 +1002,7 @@ function speak(text){
     if(!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'fr-FR';
+    u.lang = LANG==='fr' ? 'fr-FR' : 'en-US';
     u.rate = 0.85;
     u.pitch = 1.15;
     window.speechSynthesis.speak(u);
@@ -830,46 +1043,36 @@ function robotStage(){
   if(s>=10) return 1;
   return 0;
 }
-const STAGE_LABELS = [
-  "Petit robot débutant",
-  "Robot avec antenne",
-  "Robot avec des bras",
-  "Robot complet",
-  "Super robot doré !"
-];
+const STAGE_LABELS = {
+  fr:["Petit robot débutant","Robot avec antenne","Robot avec des bras","Robot complet","Super robot doré !"],
+  en:["Beginner little robot","Robot with an antenna","Robot with arms","Full robot","Super golden robot!"]
+};
 function renderRobot(){
   const stage = robotStage();
-  document.getElementById('stageLabel').textContent = STAGE_LABELS[stage];
+  document.getElementById('stageLabel').textContent = STAGE_LABELS[LANG][stage];
   const glow = stage>=4 ? 'var(--yellow)' : 'var(--violet)';
   let svg = `<svg width="150" height="170" viewBox="0 0 150 170" xmlns="http://www.w3.org/2000/svg">`;
-  // glow base
   svg += `<ellipse cx="75" cy="155" rx="46" ry="10" fill="${glow}" opacity="0.25"/>`;
-  // antenna (stage>=1)
   if(stage>=1){
     svg += `<line x1="75" y1="20" x2="75" y2="4" stroke="#8C7BFF" stroke-width="4" stroke-linecap="round"/>`;
     svg += `<circle cx="75" cy="4" r="6" fill="${stage>=4?'#FFD93D':'#FF6B6B'}"/>`;
   }
-  // arms (stage>=2)
   if(stage>=2){
     svg += `<rect x="18" y="70" width="14" height="45" rx="7" fill="#8C7BFF"/>`;
     svg += `<rect x="118" y="70" width="14" height="45" rx="7" fill="#8C7BFF"/>`;
   }
-  // legs (stage>=3)
   if(stage>=3){
     svg += `<rect x="52" y="145" width="14" height="20" rx="6" fill="#4d3ba6"/>`;
     svg += `<rect x="84" y="145" width="14" height="20" rx="6" fill="#4d3ba6"/>`;
   }
-  // cape / booster (stage>=4)
   if(stage>=4){
     svg += `<path d="M50 60 Q30 100 45 140 L60 120 Z" fill="#FFD93D" opacity="0.85"/>`;
     svg += `<path d="M100 60 Q120 100 105 140 L90 120 Z" fill="#FFD93D" opacity="0.85"/>`;
   }
-  // head
   svg += `<rect x="35" y="20" width="80" height="60" rx="20" fill="#ffffff" stroke="#8C7BFF" stroke-width="4"/>`;
   svg += `<circle cx="58" cy="50" r="7" fill="#241F45"/>`;
   svg += `<circle cx="92" cy="50" r="7" fill="#241F45"/>`;
   svg += `<path d="M58 65 Q75 76 92 65" stroke="#241F45" stroke-width="4" fill="none" stroke-linecap="round"/>`;
-  // body
   svg += `<rect x="42" y="85" width="66" height="60" rx="18" fill="#F3F1FF" stroke="#8C7BFF" stroke-width="4"/>`;
   svg += `<circle cx="75" cy="115" r="10" fill="${stage>=4?'#FFD93D':'#4ECDC4'}"/>`;
   svg += `</svg>`;
@@ -879,18 +1082,30 @@ function renderRobot(){
 /* ============================================================
    PIXEL COMPANION BUBBLE
 ============================================================ */
-const PIXEL_LINES = [
-  "Tu progresses super bien !",
-  "Encore une étoile et je grandis encore un peu !",
-  "J'adore apprendre avec toi !",
-  "Tu es un champion des lettres !",
-  "Prêt pour un nouveau défi ?",
-  "Chaque étoile compte, continue !",
-  "Savais-tu que moi aussi j'apprends chaque jour ?"
-];
+const PIXEL_LINES = {
+  fr:[
+    "Tu progresses super bien !",
+    "Encore une étoile et je grandis encore un peu !",
+    "J'adore apprendre avec toi !",
+    "Tu es un champion des lettres !",
+    "Prêt pour un nouveau défi ?",
+    "Chaque étoile compte, continue !",
+    "Savais-tu que moi aussi j'apprends chaque jour ?"
+  ],
+  en:[
+    "You're doing so well!",
+    "One more star and I'll grow a bit more!",
+    "I love learning with you!",
+    "You're a letters champion!",
+    "Ready for a new challenge?",
+    "Every star counts, keep going!",
+    "Did you know I learn something new every day too?"
+  ]
+};
 function pixelTalk(){
   const bubble = document.getElementById('pixel-bubble');
-  const line = PIXEL_LINES[Math.floor(Math.random()*PIXEL_LINES.length)];
+  const lines = PIXEL_LINES[LANG];
+  const line = lines[Math.floor(Math.random()*lines.length)];
   bubble.textContent = "🤖 " + line;
   bubble.classList.add('show');
   speak(line);
@@ -917,24 +1132,33 @@ function confettiBurst(){
 /* ============================================================
    LECTURE — ALPHABET
 ============================================================ */
-const ALPHABET = [
+const ALPHABET_FR = [
   ['A','Avion'],['B','Ballon'],['C','Chat'],['D','Dauphin'],['E','Étoile'],
   ['F','Fleur'],['G','Girafe'],['H','Hibou'],['I','Île'],['J','Jardin'],
   ['K','Kangourou'],['L','Lion'],['M','Maison'],['N','Nuage'],['O','Orange'],
   ['P','Papillon'],['Q','Quille'],['R','Robot'],['S','Soleil'],['T','Tortue'],
   ['U','Usine'],['V','Voiture'],['W','Wagon'],['X','Xylophone'],['Y','Yaourt'],['Z','Zèbre']
 ];
+const ALPHABET_EN = [
+  ['A','Apple'],['B','Ball'],['C','Cat'],['D','Dog'],['E','Elephant'],
+  ['F','Fish'],['G','Giraffe'],['H','Hat'],['I','Island'],['J','Juice'],
+  ['K','Kite'],['L','Lion'],['M','Moon'],['N','Nest'],['O','Orange'],
+  ['P','Penguin'],['Q','Queen'],['R','Robot'],['S','Sun'],['T','Turtle'],
+  ['U','Umbrella'],['V','Volcano'],['W','Whale'],['X','Xylophone'],['Y','Yo-yo'],['Z','Zebra']
+];
+function getAlphabet(){ return LANG==='fr' ? ALPHABET_FR : ALPHABET_EN; }
 function renderAlphabet(){
   const grid = document.getElementById('alphaGrid');
   grid.innerHTML = '';
-  ALPHABET.forEach(([letter,word])=>{
+  getAlphabet().forEach(([letter,word])=>{
     const seen = state.lettersSeen[letter];
     const btn = document.createElement('button');
     btn.className = 'tile' + (seen?' seen':'');
     btn.innerHTML = `${letter}<small>${word}</small>`;
     btn.onclick = ()=>{
-      document.getElementById('alphaWord').textContent = `${letter} comme ${word}`;
-      speak(`${letter}. ${letter} comme ${word}.`);
+      const joinWord = LANG==='fr' ? `${letter} comme ${word}` : `${letter} is for ${word}`;
+      document.getElementById('alphaWord').textContent = joinWord;
+      speak(`${letter}. ${joinWord}.`);
       if(!state.lettersSeen[letter]){
         state.lettersSeen[letter] = true;
         addStar('lecture',1);
@@ -1007,19 +1231,19 @@ function huntCaughtCount(){ return Object.keys(state.huntSeen).length; }
 function updateHuntProgress(){
   const n = huntCaughtCount();
   document.getElementById('huntProgressFill').style.width = Math.round(100*n/26)+'%';
-  document.getElementById('huntProgressText').textContent = `${n} / 26 lettres retrouvées`;
+  document.getElementById('huntProgressText').textContent = `${n} / 26 ${T('huntProgress')}`;
 }
 function nextHuntRound(){
-  const unseenLetters = ALPHABET.filter(([l])=>!state.huntSeen[l]).map(([l])=>l);
-  const pool = unseenLetters.length ? unseenLetters : ALPHABET.map(([l])=>l);
+  const alphabet = getAlphabet();
+  const unseenLetters = alphabet.filter(([l])=>!state.huntSeen[l]).map(([l])=>l);
+  const pool = unseenLetters.length ? unseenLetters : alphabet.map(([l])=>l);
   const targetLetter = pool[Math.floor(Math.random()*pool.length)];
-  const targetWord = ALPHABET.find(([l])=>l===targetLetter)[1];
   huntTarget = targetLetter;
 
-  document.getElementById('huntBanner').textContent = `Trouve la lettre qui fait le son "${targetLetter}"`;
-  speak(`Trouve la lettre ${targetLetter}`);
+  document.getElementById('huntBanner').textContent = `${T('huntBannerPrefix')} "${targetLetter}"`;
+  speak(LANG==='fr' ? `Trouve la lettre ${targetLetter}` : `Find the letter ${targetLetter}`);
 
-  const distractorPool = ALPHABET.map(([l])=>l).filter(l=>l!==targetLetter);
+  const distractorPool = alphabet.map(([l])=>l).filter(l=>l!==targetLetter);
   const shuffledDistractors = distractorPool.sort(()=>Math.random()-0.5).slice(0,5);
   const tiles = [targetLetter, ...shuffledDistractors].sort(()=>Math.random()-0.5);
 
@@ -1042,7 +1266,7 @@ function nextHuntRound(){
     tile.onclick = ()=>{
       if(letter===huntTarget){
         tile.classList.add('caught');
-        speak('Bravo, attrapé !');
+        speak(LANG==='fr' ? 'Bravo, attrapé !' : 'Got it, well done!');
         if(!state.huntSeen[letter]){
           state.huntSeen[letter] = true;
           addStar('lecture',1);
@@ -1052,7 +1276,7 @@ function nextHuntRound(){
       } else {
         tile.style.transform = 'translateX(4px)';
         setTimeout(()=>{ tile.style.transform=''; }, 150);
-        speak('Pas celle-là, réessaie');
+        speak(LANG==='fr' ? 'Pas celle-là, réessaie' : 'Not that one, try again');
       }
     };
     scene.appendChild(tile);
@@ -1063,18 +1287,25 @@ function nextHuntRound(){
 /* ============================================================
    LECTURE — MOTS & IMAGES
 ============================================================ */
-const MOTS_ITEMS = [
+const MOTS_ITEMS_FR = [
   ['🍎','pomme'],['🐱','chat'],['🐶','chien'],['☀️','soleil'],['🌙','lune'],
   ['🚗','voiture'],['🏠','maison'],['🐟','poisson'],['🍌','banane'],
   ['🌳','arbre'],['⭐','étoile'],['🎈','ballon']
 ];
+const MOTS_ITEMS_EN = [
+  ['🍎','apple'],['🐱','cat'],['🐶','dog'],['☀️','sun'],['🌙','moon'],
+  ['🚗','car'],['🏠','house'],['🐟','fish'],['🍌','banana'],
+  ['🌳','tree'],['⭐','star'],['🎈','balloon']
+];
+function getMotsItems(){ return LANG==='fr' ? MOTS_ITEMS_FR : MOTS_ITEMS_EN; }
 let currentMot = null;
 function nextMotItem(){
-  currentMot = MOTS_ITEMS[Math.floor(Math.random()*MOTS_ITEMS.length)];
+  const items = getMotsItems();
+  currentMot = items[Math.floor(Math.random()*items.length)];
   document.getElementById('motsEmoji').textContent = currentMot[0];
   const options = new Set([currentMot[1]]);
   while(options.size<3){
-    options.add(MOTS_ITEMS[Math.floor(Math.random()*MOTS_ITEMS.length)][1]);
+    options.add(items[Math.floor(Math.random()*items.length)][1]);
   }
   const arr = Array.from(options).sort(()=>Math.random()-0.5);
   const row = document.getElementById('motsOptions');
@@ -1088,8 +1319,8 @@ function nextMotItem(){
       if(word===currentMot[1]){
         b.classList.add('correct');
         document.getElementById('motsFeedback').className = 'feedback-msg good';
-        document.getElementById('motsFeedback').textContent = 'Bravo ! 🎉';
-        speak('Bravo ! ' + word);
+        document.getElementById('motsFeedback').textContent = T('feedbackGood');
+        speak((LANG==='fr'?'Bravo ! ':'Well done! ') + word);
         if(!state.motsSeen[word]){
           state.motsSeen[word] = true;
           addStar('lecture',1);
@@ -1098,7 +1329,7 @@ function nextMotItem(){
       }else{
         b.classList.add('wrong');
         document.getElementById('motsFeedback').className = 'feedback-msg retry';
-        document.getElementById('motsFeedback').textContent = 'Presque, réessaie !';
+        document.getElementById('motsFeedback').textContent = T('feedbackRetryWord');
       }
     };
     row.appendChild(b);
@@ -1121,7 +1352,7 @@ function setEcritureCase(c){
 function renderEcritureGrid(){
   const grid = document.getElementById('ecritureGrid');
   grid.innerHTML = '';
-  ALPHABET.forEach(([letter])=>{
+  getAlphabet().forEach(([letter])=>{
     const display = ecritureCase==='maj' ? letter : letter.toLowerCase();
     const key = ecritureCase+letter;
     const seen = state.ecritureSeen[key];
@@ -1172,12 +1403,12 @@ function finishTrace(){
   const fb = document.getElementById('traceFeedback');
   if(!hasDrawn){
     fb.className = 'feedback-msg retry';
-    fb.textContent = "Essaie de tracer par-dessus la lettre transparente !";
+    fb.textContent = T('traceRetry');
     return;
   }
   fb.className = 'feedback-msg good';
-  fb.textContent = 'Bravo, quelle belle lettre ! 🎉';
-  speak('Bravo !');
+  fb.textContent = T('traceGood');
+  speak(LANG==='fr' ? 'Bravo !' : 'Well done!');
   if(!state.ecritureSeen[key]){
     state.ecritureSeen[key] = true;
     addStar('ecriture',1);
@@ -1194,8 +1425,7 @@ function setChiffresTab(tab){
   chiffresTab = tab;
   document.querySelectorAll('#module-chiffres .subnav button').forEach(b=>b.classList.remove('active'));
   document.querySelector(`#module-chiffres .subnav button[data-clevel="${tab}"]`).classList.add('active');
-  document.getElementById('chiffresTitle').textContent =
-    tab==='add' ? 'Combien cela fait-il en tout ?' : 'Combien en vois-tu ?';
+  document.getElementById('chiffresTitle').textContent = tab==='add' ? T('additionTitle') : T('countingTitle');
   nextChiffresItem();
 }
 function nextChiffresItem(){
@@ -1209,7 +1439,7 @@ function nextChiffresItem(){
     const a = 1+Math.floor(Math.random()*5);
     const b = 1+Math.floor(Math.random()*5);
     const sum = a+b;
-    emojiRow.innerHTML = emoji.repeat(a) + ' <span style="font-size:1.6rem;">+</span> ' + emoji.repeat(b);
+    emojiRow.innerHTML = Array(a).fill(emoji).join(' ') + ' <span style="font-size:1.1em;">+</span> ' + Array(b).fill(emoji).join(' ');
     const opts = new Set([sum]);
     while(opts.size<3){ opts.add(Math.max(1, sum + (Math.floor(Math.random()*5)-2))); }
     buildChiffresOptions(Array.from(opts), sum, ()=>{ state.additionCount++; if(state.additionCount<=10) addStar('chiffres',1); });
@@ -1217,7 +1447,7 @@ function nextChiffresItem(){
     const min = chiffresTab==='c1' ? 1 : 11;
     const max = chiffresTab==='c1' ? 10 : 20;
     const n = min + Math.floor(Math.random()*(max-min+1));
-    emojiRow.textContent = emoji.repeat(n);
+    emojiRow.textContent = Array(n).fill(emoji).join(' ');
     const opts = new Set([n]);
     while(opts.size<3){ opts.add(min + Math.floor(Math.random()*(max-min+1))); }
     buildChiffresOptions(Array.from(opts), n, ()=>{
@@ -1237,14 +1467,14 @@ function buildChiffresOptions(nums, correct, onCorrect){
       if(n===correct){
         b.classList.add('correct');
         fb.className = 'feedback-msg good';
-        fb.textContent = 'Bravo ! 🎉';
-        speak('Bravo, c\'est '+correct);
+        fb.textContent = T('feedbackGood');
+        speak((LANG==='fr' ? 'Bravo, c\'est ' : 'Well done, it\'s ') + correct);
         onCorrect();
         setTimeout(nextChiffresItem, 900);
       }else{
         b.classList.add('wrong');
         fb.className = 'feedback-msg retry';
-        fb.textContent = 'Presque, recompte bien !';
+        fb.textContent = T('feedbackRetryCount');
       }
     };
     optRow.appendChild(b);
@@ -1254,22 +1484,34 @@ function buildChiffresOptions(nums, correct, onCorrect){
 /* ============================================================
    IA MODULE
 ============================================================ */
-const IA_INTRO = [
-  "Bonjour ! Moi c'est Pixel, un petit robot qui adore apprendre, un peu comme toi à l'école !",
-  "Quand un robot ou un ordinateur peut apprendre et réfléchir, on appelle ça l'intelligence artificielle, ou « l'IA ».",
-  "Pour apprendre, un robot a besoin de beaucoup d'exemples, comme toi quand tu t'entraînes à lire ou à compter !",
-  "Il existe des grandes personnes qui inventent et fabriquent ces robots intelligents.",
-  "Peut-être qu'un jour, toi aussi, tu créeras des robots ou des ordinateurs très malins !"
-];
+const IA_INTRO = {
+  fr:[
+    "Bonjour ! Moi c'est Pixel, un petit robot qui adore apprendre, un peu comme toi à l'école !",
+    "Quand un robot ou un ordinateur peut apprendre et réfléchir, on appelle ça l'intelligence artificielle, ou « l'IA ».",
+    "Pour apprendre, un robot a besoin de beaucoup d'exemples, comme toi quand tu t'entraînes à lire ou à compter !",
+    "Il existe des grandes personnes qui inventent et fabriquent ces robots intelligents.",
+    "Peut-être qu'un jour, toi aussi, tu créeras des robots ou des ordinateurs très malins !"
+  ],
+  en:[
+    "Hi! I'm Pixel, a little robot who loves learning, a bit like you at school!",
+    "When a robot or a computer can learn and think, we call that artificial intelligence, or \"AI\".",
+    "To learn, a robot needs lots of examples, just like you when you practice reading or counting!",
+    "There are grown-ups whose job is to invent and build these smart robots.",
+    "Maybe one day, you too will create robots or very clever computers!"
+  ]
+};
 let introIdx = 0;
 function renderIntro(){
-  document.getElementById('introText').textContent = IA_INTRO[introIdx];
-  document.getElementById('introNextBtn').textContent = introIdx===IA_INTRO.length-1 ? "J'ai compris ! ✅" : "Suivant ▶";
+  document.getElementById('introText').textContent = IA_INTRO[LANG][introIdx];
+  document.getElementById('introNextBtn').textContent = introIdx===IA_INTRO[LANG].length-1
+    ? (LANG==='fr' ? "J'ai compris ! ✅" : "Got it! ✅")
+    : T('navNext');
 }
-function introPrev(){ if(introIdx>0){ introIdx--; renderIntro(); speak(IA_INTRO[introIdx]); } }
+function introPrev(){ if(introIdx>0){ introIdx--; renderIntro(); speak(IA_INTRO[LANG][introIdx]); } }
 function introNext(){
-  if(introIdx<IA_INTRO.length-1){
-    introIdx++; renderIntro(); speak(IA_INTRO[introIdx]);
+  const lines = IA_INTRO[LANG];
+  if(introIdx<lines.length-1){
+    introIdx++; renderIntro(); speak(lines[introIdx]);
   } else {
     if(!state.iaIntroDone){ state.iaIntroDone = true; addStar('ia',3); }
     setIaTab('train');
@@ -1291,11 +1533,11 @@ function renderTrainBuckets(){
   row.innerHTML = '';
   const b1 = document.createElement('button');
   b1.className = 'bucket-btn'; b1.style.background = 'var(--coral)';
-  b1.textContent = '🍎 Fruit';
+  b1.textContent = T('bucketFruit');
   b1.onclick = ()=>checkTrain('fruit');
   const b2 = document.createElement('button');
   b2.className = 'bucket-btn'; b2.style.background = 'var(--green)';
-  b2.textContent = '🥕 Légume';
+  b2.textContent = T('bucketVeg');
   b2.onclick = ()=>checkTrain('legume');
   row.appendChild(b1); row.appendChild(b2);
 }
@@ -1303,42 +1545,59 @@ function checkTrain(choice){
   const fb = document.getElementById('trainFeedback');
   if(choice===currentTrain[1]){
     fb.className = 'feedback-msg good';
-    fb.textContent = 'Merci, Pixel apprend ! 🧠';
-    speak('Merci, j\'apprends !');
+    fb.textContent = T('trainGood');
+    speak(LANG==='fr' ? 'Merci, j\'apprends !' : 'Thanks, I\'m learning!');
     if(state.iaTrainCount<15){ state.iaTrainCount++; addStar('ia',1); }
     document.getElementById('brainFill').style.width = Math.min(100, Math.round(100*state.iaTrainCount/15))+'%';
     setTimeout(nextTrainItem, 700);
   } else {
     fb.className = 'feedback-msg retry';
-    fb.textContent = 'Ce n\'est pas ça, réessaie !';
+    fb.textContent = T('trainWrong');
   }
 }
 
-const IA_FACTS = [
-  "Le sais-tu ? Certaines voitures peuvent rouler toutes seules grâce à l'intelligence artificielle !",
-  "Le sais-tu ? Des robots aident les médecins à soigner les gens dans les hôpitaux.",
-  "Le sais-tu ? Ton assistant vocal préféré utilise l'IA pour comprendre ce que tu dis.",
-  "Le sais-tu ? Des robots explorent même l'espace et la planète Mars pour nous !",
-  "Le sais-tu ? L'IA aide aussi à traduire des langues, comme un traducteur magique."
-];
+const IA_FACTS = {
+  fr:[
+    "Le sais-tu ? Certaines voitures peuvent rouler toutes seules grâce à l'intelligence artificielle !",
+    "Le sais-tu ? Des robots aident les médecins à soigner les gens dans les hôpitaux.",
+    "Le sais-tu ? Ton assistant vocal préféré utilise l'IA pour comprendre ce que tu dis.",
+    "Le sais-tu ? Des robots explorent même l'espace et la planète Mars pour nous !",
+    "Le sais-tu ? L'IA aide aussi à traduire des langues, comme un traducteur magique."
+  ],
+  en:[
+    "Did you know? Some cars can drive all by themselves thanks to artificial intelligence!",
+    "Did you know? Robots help doctors take care of people in hospitals.",
+    "Did you know? Your favorite voice assistant uses AI to understand what you say.",
+    "Did you know? Robots even explore space and the planet Mars for us!",
+    "Did you know? AI also helps translate languages, like a magic translator."
+  ]
+};
 let factIdx = 0;
 function renderFact(){
-  document.getElementById('factText').textContent = IA_FACTS[factIdx];
+  document.getElementById('factText').textContent = IA_FACTS[LANG][factIdx];
   if(!state.iaFactsSeen[factIdx]){ state.iaFactsSeen[factIdx]=true; addStar('ia',1); }
 }
-function factPrev(){ factIdx = (factIdx-1+IA_FACTS.length)%IA_FACTS.length; renderFact(); speak(IA_FACTS[factIdx]); }
-function factNext(){ factIdx = (factIdx+1)%IA_FACTS.length; renderFact(); speak(IA_FACTS[factIdx]); }
+function factPrev(){ factIdx = (factIdx-1+IA_FACTS[LANG].length)%IA_FACTS[LANG].length; renderFact(); speak(IA_FACTS[LANG][factIdx]); }
+function factNext(){ factIdx = (factIdx+1)%IA_FACTS[LANG].length; renderFact(); speak(IA_FACTS[LANG][factIdx]); }
 
-const IA_JOBS = [
-  ['👩‍💻','Ingénieure / Ingénieur en IA','Elle ou il apprend aux ordinateurs à réfléchir et à résoudre des problèmes.'],
-  ['👨‍💻','Codeuse / Codeur','Elle ou il écrit les instructions, un peu comme une recette, pour que le robot sache quoi faire.'],
-  ['🤖','Roboticienne / Roboticien','Elle ou il conçoit et construit les robots, leurs bras, leurs roues, leurs capteurs.'],
-  ['🎨','Designer d\'interface','Elle ou il imagine des écrans jolis et faciles à utiliser, comme cette appli !']
-];
+const IA_JOBS = {
+  fr:[
+    ['👩‍💻','Ingénieure / Ingénieur en IA','Elle ou il apprend aux ordinateurs à réfléchir et à résoudre des problèmes.'],
+    ['👨‍💻','Codeuse / Codeur','Elle ou il écrit les instructions, un peu comme une recette, pour que le robot sache quoi faire.'],
+    ['🤖','Roboticienne / Roboticien','Elle ou il conçoit et construit les robots, leurs bras, leurs roues, leurs capteurs.'],
+    ['🎨','Designer d\'interface','Elle ou il imagine des écrans jolis et faciles à utiliser, comme cette appli !']
+  ],
+  en:[
+    ['👩‍💻','AI Engineer','They teach computers how to think and solve problems.'],
+    ['👨‍💻','Coder','They write the instructions, a bit like a recipe, so the robot knows what to do.'],
+    ['🤖','Robotics Engineer','They design and build robots: their arms, wheels, and sensors.'],
+    ['🎨','Interface Designer','They imagine screens that are pretty and easy to use, like this app!']
+  ]
+};
 function renderJobs(){
   const grid = document.getElementById('jobsGrid');
   grid.innerHTML = '';
-  IA_JOBS.forEach(([emoji,title,desc])=>{
+  IA_JOBS[LANG].forEach(([emoji,title,desc])=>{
     const card = document.createElement('div');
     card.className = 'job-card';
     card.innerHTML = `<div class="job-emoji">${emoji}</div><h3 style="margin:6px 0;">${title}</h3><p style="margin:0;color:var(--ink-soft);font-weight:600;font-size:0.9rem;">${desc}</p>`;
@@ -1363,7 +1622,7 @@ function setIaTab(tab){
 /* ============================================================
    PROGRAMME PIXEL (basic robotics: sequencing maze game)
 ============================================================ */
-const DIRS = ['up','right','down','left']; // rotation order
+const DIRS = ['up','right','down','left'];
 const DIR_DELTA = { up:{dr:-1,dc:0}, right:{dr:0,dc:1}, down:{dr:1,dc:0}, left:{dr:0,dc:-1} };
 const DIR_ANGLE = { up:0, right:90, down:180, left:270 };
 
@@ -1395,13 +1654,13 @@ function renderLevelRow(){
   MAZE_LEVELS.forEach((lvl,i)=>{
     const b = document.createElement('button');
     b.className = 'level-btn' + (currentLevelIdx===i?' active':'') + (state.roboticsLevelsDone[i]?' done':'');
-    b.textContent = 'Niveau '+(i+1);
+    b.textContent = T('levelLabel')+' '+(i+1);
     b.onclick = ()=>{ currentLevelIdx=i; randomLevelData=null; loadLevelCommon(); renderLevelRow(); };
     row.appendChild(b);
   });
   const randomBtn = document.createElement('button');
   randomBtn.className = 'level-btn random-btn' + (currentLevelIdx==='random'?' active':'');
-  randomBtn.textContent = '🎲 Défi surprise';
+  randomBtn.textContent = T('randomChallenge');
   randomBtn.onclick = ()=>{ generateRandomChallenge(); renderLevelRow(); };
   row.appendChild(randomBtn);
 }
@@ -1508,8 +1767,8 @@ function runProgram(){
       }
       if(success){
         fb.className = 'feedback-msg good';
-        fb.textContent = "Bravo, tu as programmé Pixel avec succès ! 🎉";
-        speak('Bravo, mission réussie !');
+        fb.textContent = T('mazeGood');
+        speak(LANG==='fr' ? 'Bravo, mission réussie !' : 'Great job, mission accomplished!');
         if(currentLevelIdx==='random'){
           if(state.roboticsRandomWins<5){ state.roboticsRandomWins++; addStar('ia',1); }
         } else if(!state.roboticsLevelsDone[currentLevelIdx]){
@@ -1519,7 +1778,7 @@ function runProgram(){
         }
       } else {
         fb.className = 'feedback-msg retry';
-        fb.textContent = lvl.coins ? "Presque ! Il manque encore des diamants à récupérer." : "Presque ! Essaie une autre suite de commandes.";
+        fb.textContent = lvl.coins ? T('mazeRetryCoins') : T('mazeRetryTarget');
       }
       return;
     }
@@ -1555,65 +1814,125 @@ function checkCoinAt(r,c,lvl){
    CONTES (interactive read-aloud stories with a moral)
 ============================================================ */
 const STORIES = [
-  { id:'renard', cover:'🦊', title:"Le petit renard qui avait peur du noir",
-    pages:[
-      {emoji:'🦊🌙', text:"Rouky le petit renard adorait jouer dans la forêt... mais dès que la nuit tombait, il avait terriblement peur du noir."},
-      {emoji:'🌲', text:"Un soir, en rentrant chez lui, Rouky se perdit dans les bois sombres. Son cœur battait très fort."},
-      {emoji:'🦔', text:"Il rencontra Pic, un petit hérisson qui n'avait pas peur du tout. « Pourquoi trembles-tu ? » demanda Pic."},
-      {emoji:'🕯️', text:"« J'ai peur du noir » avoua Rouky. Pic sourit : « Le noir ne fait pas de mal, ce sont nos pensées qui nous font peur. Avance avec moi, pas à pas. »"},
-      {emoji:'⭐', text:"Ensemble, guidés par la lumière des étoiles, ils retrouvèrent le chemin de la maison. Rouky n'avait plus si peur, car il n'était plus seul."}
-    ],
-    summary:"Rouky avait peur du noir, mais grâce à l'aide de son ami Pic le hérisson, il a appris à avancer malgré sa peur et à retrouver son chemin.",
-    lesson:"Le courage, ce n'est pas de ne jamais avoir peur : c'est d'avancer quand même, surtout quand on est bien entouré.",
-    question:"Et toi, qu'est-ce qui t'aide quand tu as un peu peur ?"
+  { id:'renard', cover:'🦊',
+    title:{fr:"Le petit renard qui avait peur du noir", en:"The Little Fox Who Was Afraid of the Dark"},
+    pages:{
+      fr:[
+        {emoji:'🦊🌙', text:"Rouky le petit renard adorait jouer dans la forêt... mais dès que la nuit tombait, il avait terriblement peur du noir."},
+        {emoji:'🌲', text:"Un soir, en rentrant chez lui, Rouky se perdit dans les bois sombres. Son cœur battait très fort."},
+        {emoji:'🦔', text:"Il rencontra Pic, un petit hérisson qui n'avait pas peur du tout. « Pourquoi trembles-tu ? » demanda Pic."},
+        {emoji:'🕯️', text:"« J'ai peur du noir » avoua Rouky. Pic sourit : « Le noir ne fait pas de mal, ce sont nos pensées qui nous font peur. Avance avec moi, pas à pas. »"},
+        {emoji:'⭐', text:"Ensemble, guidés par la lumière des étoiles, ils retrouvèrent le chemin de la maison. Rouky n'avait plus si peur, car il n'était plus seul."}
+      ],
+      en:[
+        {emoji:'🦊🌙', text:"Rouky the little fox loved playing in the forest... but as soon as night fell, he was terribly afraid of the dark."},
+        {emoji:'🌲', text:"One evening, on his way home, Rouky got lost in the dark woods. His heart was pounding."},
+        {emoji:'🦔', text:"He met Pic, a little hedgehog who wasn't scared at all. \"Why are you shaking?\" asked Pic."},
+        {emoji:'🕯️', text:"\"I'm afraid of the dark,\" admitted Rouky. Pic smiled: \"The dark can't hurt you, it's our thoughts that scare us. Walk with me, step by step.\""},
+        {emoji:'⭐', text:"Together, guided by the light of the stars, they found their way home. Rouky wasn't so scared anymore, because he wasn't alone."}
+      ]
+    },
+    summary:{fr:"Rouky avait peur du noir, mais grâce à l'aide de son ami Pic le hérisson, il a appris à avancer malgré sa peur et à retrouver son chemin.",
+             en:"Rouky was afraid of the dark, but with the help of his friend Pic the hedgehog, he learned to move forward despite his fear and find his way home."},
+    lesson:{fr:"Le courage, ce n'est pas de ne jamais avoir peur : c'est d'avancer quand même, surtout quand on est bien entouré.",
+            en:"Courage isn't about never being afraid: it's about moving forward anyway, especially when you have good friends around you."},
+    question:{fr:"Et toi, qu'est-ce qui t'aide quand tu as un peu peur ?", en:"What helps you when you feel a little scared?"}
   },
-  { id:'escargot', cover:'🐌', title:"Zéphyr l'escargot qui n'était jamais pressé",
-    pages:[
-      {emoji:'🐌', text:"Zéphyr l'escargot avançait tout doucement sur le grand chemin du jardin."},
-      {emoji:'🐇', text:"Un lièvre pressé le dépassa en riant : « Tu n'arriveras jamais avant la nuit, petit lambin ! »"},
-      {emoji:'🌻', text:"Zéphyr ne se vexa pas. Il continua tranquillement, en admirant chaque fleur sur sa route."},
-      {emoji:'😮', text:"Plus loin, le lièvre s'était arrêté pour faire la sieste, trop fatigué d'avoir couru si vite."},
-      {emoji:'🏁', text:"Zéphyr, lui, arriva tout doucement, mais sûrement, jusqu'au bout du jardin, juste avant la tombée de la nuit."}
-    ],
-    summary:"Zéphyr avançait lentement mais sans jamais s'arrêter, alors que le lièvre pressé s'est épuisé en chemin.",
-    lesson:"Ce n'est pas toujours celui qui va le plus vite qui arrive le premier : la patience et la régularité mènent loin.",
-    question:"Y a-t-il quelque chose que tu apprends petit à petit, chaque jour, comme Zéphyr ?"
+  { id:'escargot', cover:'🐌',
+    title:{fr:"Zéphyr l'escargot qui n'était jamais pressé", en:"Zephyr the Snail Who Was Never in a Hurry"},
+    pages:{
+      fr:[
+        {emoji:'🐌', text:"Zéphyr l'escargot avançait tout doucement sur le grand chemin du jardin."},
+        {emoji:'🐇', text:"Un lièvre pressé le dépassa en riant : « Tu n'arriveras jamais avant la nuit, petit lambin ! »"},
+        {emoji:'🌻', text:"Zéphyr ne se vexa pas. Il continua tranquillement, en admirant chaque fleur sur sa route."},
+        {emoji:'😮', text:"Plus loin, le lièvre s'était arrêté pour faire la sieste, trop fatigué d'avoir couru si vite."},
+        {emoji:'🏁', text:"Zéphyr, lui, arriva tout doucement, mais sûrement, jusqu'au bout du jardin, juste avant la tombée de la nuit."}
+      ],
+      en:[
+        {emoji:'🐌', text:"Zephyr the snail moved slowly along the long garden path."},
+        {emoji:'🐇', text:"A hurried hare zoomed past him, laughing: \"You'll never make it before nightfall, slowpoke!\""},
+        {emoji:'🌻', text:"Zephyr wasn't bothered. He kept going calmly, admiring every flower along the way."},
+        {emoji:'😮', text:"Further along, the hare had stopped for a nap, too tired from running so fast."},
+        {emoji:'🏁', text:"Zephyr, slow but steady, reached the end of the garden just before nightfall."}
+      ]
+    },
+    summary:{fr:"Zéphyr avançait lentement mais sans jamais s'arrêter, alors que le lièvre pressé s'est épuisé en chemin.",
+             en:"Zephyr moved slowly but never stopped, while the hurried hare wore himself out along the way."},
+    lesson:{fr:"Ce n'est pas toujours celui qui va le plus vite qui arrive le premier : la patience et la régularité mènent loin.",
+            en:"It's not always the fastest one who arrives first: patience and steady effort go a long way."},
+    question:{fr:"Y a-t-il quelque chose que tu apprends petit à petit, chaque jour, comme Zéphyr ?", en:"Is there something you're learning little by little, every day, just like Zephyr?"}
   },
-  { id:'etoile', cover:'✨', title:"L'étoile qui ne brillait pas comme les autres",
-    pages:[
-      {emoji:'✨', text:"Dans le grand ciel, il y avait des milliers d'étoiles dorées... sauf une, toute petite et un peu bleutée, nommée Némo."},
-      {emoji:'😢', text:"Némo pensait qu'elle n'était pas assez belle. Elle essayait de briller plus fort, comme les autres, mais rien n'y faisait."},
-      {emoji:'🌌', text:"Une nuit, un petit garçon leva les yeux vers le ciel et remarqua justement cette étoile bleutée, si différente des autres."},
-      {emoji:'💙', text:"« Regarde comme cette étoile est unique ! » dit-il à sa maman. « On dirait un petit diamant bleu au milieu de l'or. »"},
-      {emoji:'🌟', text:"Némo comprit alors qu'elle n'avait pas besoin de briller comme les autres : sa lumière différente était justement ce qui la rendait spéciale."}
-    ],
-    summary:"Némo l'étoile bleue pensait ne pas être assez belle, jusqu'à ce qu'elle comprenne que sa différence était sa plus grande richesse.",
-    lesson:"Chacun de nous est unique, et c'est justement ce qui nous rend précieux.",
-    question:"Qu'est-ce qui te rend unique, toi, et dont tu es fier ou fière ?"
+  { id:'etoile', cover:'✨',
+    title:{fr:"L'étoile qui ne brillait pas comme les autres", en:"The Star That Didn't Shine Like the Others"},
+    pages:{
+      fr:[
+        {emoji:'✨', text:"Dans le grand ciel, il y avait des milliers d'étoiles dorées... sauf une, toute petite et un peu bleutée, nommée Némo."},
+        {emoji:'😢', text:"Némo pensait qu'elle n'était pas assez belle. Elle essayait de briller plus fort, comme les autres, mais rien n'y faisait."},
+        {emoji:'🌌', text:"Une nuit, un petit garçon leva les yeux vers le ciel et remarqua justement cette étoile bleutée, si différente des autres."},
+        {emoji:'💙', text:"« Regarde comme cette étoile est unique ! » dit-il à sa maman. « On dirait un petit diamant bleu au milieu de l'or. »"},
+        {emoji:'🌟', text:"Némo comprit alors qu'elle n'avait pas besoin de briller comme les autres : sa lumière différente était justement ce qui la rendait spéciale."}
+      ],
+      en:[
+        {emoji:'✨', text:"In the big sky, there were thousands of golden stars... except one, tiny and a bit blueish, named Nemo."},
+        {emoji:'😢', text:"Nemo thought she wasn't pretty enough. She tried to shine brighter, like the others, but nothing worked."},
+        {emoji:'🌌', text:"One night, a little boy looked up at the sky and noticed that very blueish star, so different from the others."},
+        {emoji:'💙', text:"\"Look how unique that star is!\" he told his mom. \"It looks like a little blue diamond among the gold.\""},
+        {emoji:'🌟', text:"Nemo then understood she didn't need to shine like the others: her different light was exactly what made her special."}
+      ]
+    },
+    summary:{fr:"Némo l'étoile bleue pensait ne pas être assez belle, jusqu'à ce qu'elle comprenne que sa différence était sa plus grande richesse.",
+             en:"Nemo the blue star thought she wasn't pretty enough, until she understood that her difference was her greatest treasure."},
+    lesson:{fr:"Chacun de nous est unique, et c'est justement ce qui nous rend précieux.", en:"Each of us is unique, and that's exactly what makes us precious."},
+    question:{fr:"Qu'est-ce qui te rend unique, toi, et dont tu es fier ou fière ?", en:"What makes you unique, and what are you proud of?"}
   },
-  { id:'lapin', cover:'🐰', title:"Le lapin qui n'écoutait jamais",
-    pages:[
-      {emoji:'🐰', text:"Filou le lapin adorait faire les choses à sa manière, et n'écoutait jamais vraiment les conseils de sa maman."},
-      {emoji:'⚠️', text:"« Ne va pas près du grand ruisseau, le courant est fort » lui dit-elle un matin. Mais Filou n'en fit qu'à sa tête."},
-      {emoji:'🌊', text:"Il s'approcha du ruisseau pour observer les poissons de plus près... et glissa sur une pierre mouillée !"},
-      {emoji:'🦫', text:"Heureusement, Castor, qui passait par là, l'attrapa juste à temps et le ramena sur la rive, trempé mais sain et sauf."},
-      {emoji:'🏡', text:"Ce soir-là, Filou remercia sa maman pour ses conseils. Il comprit qu'écouter ne veut pas dire obéir bêtement, mais se protéger intelligemment."}
-    ],
-    summary:"Filou n'écoutait jamais les conseils, jusqu'au jour où il faillit tomber dans le ruisseau. Castor l'a sauvé juste à temps.",
-    lesson:"Écouter les conseils de ceux qui nous aiment, ce n'est pas perdre sa liberté : c'est se donner les moyens de rester en sécurité tout en restant curieux du monde.",
-    question:"Peux-tu penser à un conseil qu'on t'a donné et qui t'a été utile ?"
+  { id:'lapin', cover:'🐰',
+    title:{fr:"Le lapin qui n'écoutait jamais", en:"The Rabbit Who Never Listened"},
+    pages:{
+      fr:[
+        {emoji:'🐰', text:"Filou le lapin adorait faire les choses à sa manière, et n'écoutait jamais vraiment les conseils de sa maman."},
+        {emoji:'⚠️', text:"« Ne va pas près du grand ruisseau, le courant est fort » lui dit-elle un matin. Mais Filou n'en fit qu'à sa tête."},
+        {emoji:'🌊', text:"Il s'approcha du ruisseau pour observer les poissons de plus près... et glissa sur une pierre mouillée !"},
+        {emoji:'🦫', text:"Heureusement, Castor, qui passait par là, l'attrapa juste à temps et le ramena sur la rive, trempé mais sain et sauf."},
+        {emoji:'🏡', text:"Ce soir-là, Filou remercia sa maman pour ses conseils. Il comprit qu'écouter ne veut pas dire obéir bêtement, mais se protéger intelligemment."}
+      ],
+      en:[
+        {emoji:'🐰', text:"Filou the rabbit loved doing things his own way, and never really listened to his mom's advice."},
+        {emoji:'⚠️', text:"\"Don't go near the big stream, the current is strong,\" she told him one morning. But Filou did as he pleased."},
+        {emoji:'🌊', text:"He went to the stream to watch the fish up close... and slipped on a wet rock!"},
+        {emoji:'🦫', text:"Luckily, Beaver, who was passing by, caught him just in time and brought him back to the bank, soaked but safe."},
+        {emoji:'🏡', text:"That evening, Filou thanked his mom for her advice. He understood that listening doesn't mean blindly obeying, but protecting yourself wisely."}
+      ]
+    },
+    summary:{fr:"Filou n'écoutait jamais les conseils, jusqu'au jour où il faillit tomber dans le ruisseau. Castor l'a sauvé juste à temps.",
+             en:"Filou never listened to advice, until the day he almost fell into the stream. Beaver saved him just in time."},
+    lesson:{fr:"Écouter les conseils de ceux qui nous aiment, ce n'est pas perdre sa liberté : c'est se donner les moyens de rester en sécurité tout en restant curieux du monde.",
+            en:"Listening to the advice of those who love us isn't giving up our freedom: it's giving ourselves the means to stay safe while staying curious about the world."},
+    question:{fr:"Peux-tu penser à un conseil qu'on t'a donné et qui t'a été utile ?", en:"Can you think of some advice you were given that turned out to be useful?"}
   },
-  { id:'graine', cover:'🌱', title:"La petite graine patiente",
-    pages:[
-      {emoji:'🌱', text:"Une petite graine fut plantée au fond de la terre, dans le noir complet."},
-      {emoji:'💧', text:"Chaque jour, on l'arrosait, et chaque jour, elle attendait... sans rien voir pousser."},
-      {emoji:'😞', text:"« Il ne se passe rien, je suis un échec » pensait-elle, sans savoir que sous la terre, ses racines poussaient déjà très fort."},
-      {emoji:'🌦️', text:"Après plusieurs semaines de patience, un petit bourgeon vert perça enfin la terre pour voir la lumière du soleil."},
-      {emoji:'🌻', text:"La graine était devenue un magnifique tournesol, plus grand que tous les autres, car ses racines profondes le rendaient très solide."}
-    ],
-    summary:"La graine a mis du temps à pousser, mais pendant ce temps ses racines devenaient solides sous la terre, jusqu'à devenir un magnifique tournesol.",
-    lesson:"Les efforts qu'on ne voit pas tout de suite comptent quand même : la patience et le travail discret préparent de belles réussites.",
-    question:"Y a-t-il quelque chose que tu pratiques encore, même si les progrès ne se voient pas encore beaucoup ?"
+  { id:'graine', cover:'🌱',
+    title:{fr:"La petite graine patiente", en:"The Patient Little Seed"},
+    pages:{
+      fr:[
+        {emoji:'🌱', text:"Une petite graine fut plantée au fond de la terre, dans le noir complet."},
+        {emoji:'💧', text:"Chaque jour, on l'arrosait, et chaque jour, elle attendait... sans rien voir pousser."},
+        {emoji:'😞', text:"« Il ne se passe rien, je suis un échec » pensait-elle, sans savoir que sous la terre, ses racines poussaient déjà très fort."},
+        {emoji:'🌦️', text:"Après plusieurs semaines de patience, un petit bourgeon vert perça enfin la terre pour voir la lumière du soleil."},
+        {emoji:'🌻', text:"La graine était devenue un magnifique tournesol, plus grand que tous les autres, car ses racines profondes le rendaient très solide."}
+      ],
+      en:[
+        {emoji:'🌱', text:"A little seed was planted deep in the soil, in complete darkness."},
+        {emoji:'💧', text:"Every day, it was watered, and every day, it waited... without seeing anything grow."},
+        {emoji:'😞', text:"\"Nothing is happening, I'm a failure,\" it thought, not knowing that underground, its roots were already growing strong."},
+        {emoji:'🌦️', text:"After many weeks of patience, a little green sprout finally broke through the soil to see the sunlight."},
+        {emoji:'🌻', text:"The seed had become a magnificent sunflower, taller than all the others, because its deep roots made it very strong."}
+      ]
+    },
+    summary:{fr:"La graine a mis du temps à pousser, mais pendant ce temps ses racines devenaient solides sous la terre, jusqu'à devenir un magnifique tournesol.",
+             en:"The seed took time to grow, but during that time its roots grew strong underground, until it became a magnificent sunflower."},
+    lesson:{fr:"Les efforts qu'on ne voit pas tout de suite comptent quand même : la patience et le travail discret préparent de belles réussites.",
+            en:"The efforts we don't see right away still count: patience and quiet work prepare wonderful successes."},
+    question:{fr:"Y a-t-il quelque chose que tu pratiques encore, même si les progrès ne se voient pas encore beaucoup ?",
+              en:"Is there something you're still practicing, even if you can't see much progress yet?"}
   }
 ];
 let currentStoryId = null;
@@ -1626,7 +1945,9 @@ function renderContesLibrary(){
     const card = document.createElement('button');
     card.className = 'story-cover-card';
     const done = state.storiesSeen[story.id];
-    card.innerHTML = `<div class="cover-emoji">${story.cover}</div><div><h3>${story.title}${done?' ✅':''}</h3><p>${story.pages.length} pages · ${done? 'Déjà lu':'À découvrir'}</p></div>`;
+    const title = story.title[LANG];
+    const statusLabel = done ? T('storyDone') : T('storyTodo');
+    card.innerHTML = `<div class="cover-emoji">${story.cover}</div><div><h3>${title}${done?' ✅':''}</h3><p>${story.pages[LANG].length} ${T('storyPages')} · ${statusLabel}</p></div>`;
     card.onclick = ()=>openStory(story.id);
     grid.appendChild(card);
   });
@@ -1648,29 +1969,33 @@ function openStory(id){
 function getStory(){ return STORIES.find(s=>s.id===currentStoryId); }
 function renderStoryPage(){
   const story = getStory();
-  const page = story.pages[currentPageIdx];
+  const pages = story.pages[LANG];
+  const page = pages[currentPageIdx];
   document.getElementById('storyEmoji').textContent = page.emoji;
   document.getElementById('storyText').textContent = page.text;
   const dots = document.getElementById('storyDots');
   dots.innerHTML = '';
-  story.pages.forEach((_,i)=>{
+  pages.forEach((_,i)=>{
     const d = document.createElement('span');
     if(i===currentPageIdx) d.className = 'active';
     dots.appendChild(d);
   });
-  document.getElementById('storyNextBtn').textContent = (currentPageIdx===story.pages.length-1) ? "Voir le résumé ▶" : "Suivant ▶";
+  document.getElementById('storyNextBtn').textContent = (currentPageIdx===pages.length-1)
+    ? (LANG==='fr' ? "Voir le résumé ▶" : "See the summary ▶")
+    : T('navNext');
   speak(page.text);
 }
 function replayStoryPage(){
   const story = getStory();
-  speak(story.pages[currentPageIdx].text);
+  speak(story.pages[LANG][currentPageIdx].text);
 }
 function storyPrev(){
   if(currentPageIdx>0){ currentPageIdx--; renderStoryPage(); }
 }
 function storyNext(){
   const story = getStory();
-  if(currentPageIdx < story.pages.length-1){
+  const pages = story.pages[LANG];
+  if(currentPageIdx < pages.length-1){
     currentPageIdx++; renderStoryPage();
   } else {
     finishStory();
@@ -1680,11 +2005,11 @@ function finishStory(){
   const story = getStory();
   document.getElementById('contes-reader').style.display = 'none';
   document.getElementById('contes-end').style.display = 'block';
-  document.getElementById('storyEndTitle').textContent = `Fin de : ${story.title}`;
-  document.getElementById('storySummary').textContent = story.summary;
-  document.getElementById('storyLesson').textContent = story.lesson;
-  document.getElementById('storyQuestion').textContent = story.question;
-  speak("La leçon de cette histoire : " + story.lesson);
+  document.getElementById('storyEndTitle').textContent = `${T('storyEndPrefix')} ${story.title[LANG]}`;
+  document.getElementById('storySummary').textContent = story.summary[LANG];
+  document.getElementById('storyLesson').textContent = story.lesson[LANG];
+  document.getElementById('storyQuestion').textContent = story.question[LANG];
+  speak((LANG==='fr' ? "La leçon de cette histoire : " : "The lesson of this story: ") + story.lesson[LANG]);
   if(!state.storiesSeen[story.id]){
     state.storiesSeen[story.id] = true;
     addStar('contes',3);
@@ -1692,9 +2017,107 @@ function finishStory(){
 }
 
 /* ============================================================
+   LANGUES DU MONDE (basic phrases, always anchored on French)
+============================================================ */
+const LANG_META = {
+  it:{name:'Italien', speech:'it-IT'},
+  de:{name:'Allemand', speech:'de-DE'},
+  zh:{name:'Chinois', speech:'zh-CN'},
+  ar:{name:'Arabe', speech:'ar-SA'},
+  es:{name:'Espagnol', speech:'es-ES'},
+  pt:{name:'Portugais', speech:'pt-PT'}
+};
+const PHRASES = [
+  { fr:"Bonjour", it:"Buongiorno", de:"Guten Tag", zh:{text:"你好", translit:"Nǐ hǎo"}, ar:{text:"مرحبا", translit:"Marhaban"}, es:"Hola", pt:"Olá" },
+  { fr:"Bonsoir", it:"Buonasera", de:"Guten Abend", zh:{text:"晚上好", translit:"Wǎnshàng hǎo"}, ar:{text:"مساء الخير", translit:"Masā' al-khayr"}, es:"Buenas tardes", pt:"Boa noite" },
+  { fr:"Comment ça va ?", it:"Come stai?", de:"Wie geht es dir?", zh:{text:"你好吗？", translit:"Nǐ hǎo ma?"}, ar:{text:"كيف حالك؟", translit:"Kayfa hāluk?"}, es:"¿Cómo estás?", pt:"Como estás?" },
+  { fr:"Merci", it:"Grazie", de:"Danke", zh:{text:"谢谢", translit:"Xièxiè"}, ar:{text:"شكرا", translit:"Shukran"}, es:"Gracias", pt:"Obrigado" },
+  { fr:"S'il te plaît", it:"Per favore", de:"Bitte", zh:{text:"请", translit:"Qǐng"}, ar:{text:"من فضلك", translit:"Min fadlik"}, es:"Por favor", pt:"Por favor" },
+  { fr:"Au revoir", it:"Arrivederci", de:"Auf Wiedersehen", zh:{text:"再见", translit:"Zàijiàn"}, ar:{text:"مع السلامة", translit:"Ma'a as-salāma"}, es:"Adiós", pt:"Adeus" },
+  { fr:"Je m'appelle Alice", it:"Mi chiamo Alice", de:"Ich heiße Alice", zh:{text:"我叫爱丽丝", translit:"Wǒ jiào Àilìsī"}, ar:{text:"اسمي أليس", translit:"Ismī Alice"}, es:"Me llamo Alice", pt:"Chamo-me Alice" },
+  { fr:"Je veux jouer", it:"Voglio giocare", de:"Ich möchte spielen", zh:{text:"我想玩", translit:"Wǒ xiǎng wán"}, ar:{text:"أريد أن ألعب", translit:"Urīdu an al'ab"}, es:"Quiero jugar", pt:"Quero brincar" },
+  { fr:"Je veux manger", it:"Voglio mangiare", de:"Ich möchte essen", zh:{text:"我想吃饭", translit:"Wǒ xiǎng chīfàn"}, ar:{text:"أريد أن آكل", translit:"Urīdu an ākul"}, es:"Quiero comer", pt:"Quero comer" },
+  { fr:"Je vais à l'école", it:"Vado a scuola", de:"Ich gehe zur Schule", zh:{text:"我去上学", translit:"Wǒ qù shàngxué"}, ar:{text:"أنا ذاهب إلى المدرسة", translit:"Ana dhāhib ilā al-madrasa"}, es:"Voy a la escuela", pt:"Vou à escola" },
+  { fr:"Mon papa est à la maison", it:"Il mio papà è a casa", de:"Mein Papa ist zu Hause", zh:{text:"我爸爸在家", translit:"Wǒ bàba zài jiā"}, ar:{text:"أبي في البيت", translit:"Abī fī al-bayt"}, es:"Mi papá está en casa", pt:"O meu pai está em casa" },
+  { fr:"Ma maman va au supermarché", it:"La mia mamma va al supermercato", de:"Meine Mama geht zum Supermarkt", zh:{text:"我妈妈去超市", translit:"Wǒ māma qù chāoshì"}, ar:{text:"أمي تذهب إلى السوبر ماركت", translit:"Ummī tadh-hab ilā as-sūbar mārkit"}, es:"Mi mamá va al supermercado", pt:"A minha mãe vai ao supermercado" },
+  { fr:"J'ai faim", it:"Ho fame", de:"Ich habe Hunger", zh:{text:"我饿了", translit:"Wǒ è le"}, ar:{text:"أنا جائع", translit:"Ana jā'i'"}, es:"Tengo hambre", pt:"Tenho fome" },
+  { fr:"J'ai soif", it:"Ho sete", de:"Ich habe Durst", zh:{text:"我渴了", translit:"Wǒ kě le"}, ar:{text:"أنا عطشان", translit:"Ana 'atshān"}, es:"Tengo sed", pt:"Tenho sede" },
+  { fr:"Je t'aime", it:"Ti voglio bene", de:"Ich hab dich lieb", zh:{text:"我爱你", translit:"Wǒ ài nǐ"}, ar:{text:"أحبك", translit:"Uhibbuka"}, es:"Te quiero", pt:"Adoro-te" },
+  { fr:"Bonne nuit", it:"Buonanotte", de:"Gute Nacht", zh:{text:"晚安", translit:"Wǎn'ān"}, ar:{text:"تصبح على خير", translit:"Tusbih 'alā khayr"}, es:"Buenas noches", pt:"Boa noite" },
+  { fr:"Oui / Non", it:"Sì / No", de:"Ja / Nein", zh:{text:"是 / 不是", translit:"Shì / Bùshì"}, ar:{text:"نعم / لا", translit:"Na'am / Lā"}, es:"Sí / No", pt:"Sim / Não" },
+  { fr:"Je suis content", it:"Sono felice", de:"Ich bin glücklich", zh:{text:"我很高兴", translit:"Wǒ hěn gāoxìng"}, ar:{text:"أنا سعيد", translit:"Ana sa'īd"}, es:"Estoy contento", pt:"Estou feliz" }
+];
+let currentLangTab = 'it';
+function speakForeign(text, speechLang){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = speechLang;
+    u.rate = 0.85;
+    u.pitch = 1.1;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function speakForeignSlow(text, speechLang){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = speechLang;
+    u.rate = 0.45;
+    u.pitch = 1.1;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function setLanguesTab(code){
+  currentLangTab = code;
+  document.querySelectorAll('#languesSubnav button').forEach(b=>b.classList.remove('active'));
+  const btn = document.querySelector(`#languesSubnav button[data-lg="${code}"]`);
+  if(btn) btn.classList.add('active');
+  renderPhraseList(code);
+}
+function renderPhraseList(code){
+  const meta = LANG_META[code];
+  const list = document.getElementById('phraseList');
+  list.innerHTML = '';
+  PHRASES.forEach((p, idx)=>{
+    const entry = p[code];
+    const isObj = typeof entry === 'object';
+    const targetText = isObj ? entry.text : entry;
+    const translit = isObj ? entry.translit : null;
+    const card = document.createElement('div');
+    card.className = 'phrase-card';
+    card.innerHTML = `
+      <div class="phrase-fr">🇫🇷 ${p.fr}</div>
+      <div class="phrase-target${code==='ar'?' rtl':''}">${targetText}</div>
+      ${translit ? `<div class="phrase-translit">${translit}</div>` : ''}
+      <div class="phrase-actions">
+        <button style="background:var(--teal);" onclick="playPhrase(${idx}, '${code}', false)">${T('btnListen')}</button>
+        <button style="background:var(--coral);" onclick="playPhrase(${idx}, '${code}', true)">${T('btnSlow')}</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+function playPhrase(idx, code, slow){
+  const p = PHRASES[idx];
+  const entry = p[code];
+  const targetText = typeof entry === 'object' ? entry.text : entry;
+  const meta = LANG_META[code];
+  if(slow) speakForeignSlow(targetText, meta.speech);
+  else speakForeign(targetText, meta.speech);
+  if(!state.languesSeen[code][idx]){
+    state.languesSeen[code][idx] = true;
+    addStar('langues',1);
+  }
+}
+
+/* ============================================================
    INIT
 ============================================================ */
 function refreshAll(){
+  applyI18nStaticText();
   updateHeaderAndHome();
   renderRewardHome();
   renderAlphabet();
@@ -1706,7 +2129,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
   refreshAll();
   initCanvas();
   setTimeout(()=>{
-    document.getElementById('pixel-bubble').textContent = "🤖 Coucou, je suis Pixel ! Touche-moi si tu veux un encouragement !";
+    document.getElementById('pixel-bubble').textContent = T('pixelGreeting');
     document.getElementById('pixel-bubble').classList.add('show');
     setTimeout(()=>document.getElementById('pixel-bubble').classList.remove('show'), 5000);
   }, 800);
