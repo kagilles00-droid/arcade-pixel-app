@@ -297,6 +297,35 @@
   .block-btn{ border:none; border-radius:14px; padding:12px 16px; font-weight:800; color:#fff; font-size:1.1rem; }
   .maze-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
   .maze-actions button{ border:none; border-radius:14px; padding:10px 16px; font-weight:800; color:#fff; }
+  .maze-cell.coin{ background:#fff6d6; display:flex; align-items:center; justify-content:center; font-size:1.3rem; }
+  .maze-cell.coin.collected{ background:#fbfbff; }
+  .level-btn.random-btn{ background:linear-gradient(135deg,#FF9F5A,#FF6B6B); color:#fff; border-color:transparent; }
+
+  /* ---- CONTES (stories) ---- */
+  .story-cover-grid{ display:grid; grid-template-columns:1fr; gap:14px; }
+  @media(min-width:640px){ .story-cover-grid{ grid-template-columns:1fr 1fr; } }
+  .story-cover-card{
+    background:linear-gradient(160deg,#fff,#fff3e8); border:2px solid #ffdcb8; border-radius:20px;
+    padding:18px; text-align:left; display:flex; align-items:center; gap:14px;
+  }
+  .story-cover-card .cover-emoji{ font-size:2.4rem; }
+  .story-cover-card h3{ margin:0 0 4px; font-size:1.05rem; }
+  .story-cover-card p{ margin:0; color:var(--ink-soft); font-weight:700; font-size:0.85rem; }
+  .story-page{ text-align:center; }
+  .story-emoji-big{ font-size:4rem; margin:10px 0; }
+  .story-text{ font-size:1.15rem; font-weight:700; line-height:1.5; min-height:3em; }
+  .story-dots{ display:flex; gap:6px; justify-content:center; margin:14px 0; }
+  .story-dots span{ width:9px; height:9px; border-radius:50%; background:#e3e1f7; }
+  .story-dots span.active{ background:var(--coral); }
+  .story-nav{ display:flex; justify-content:space-between; gap:10px; margin-top:10px; }
+  .story-nav button{ border:none; border-radius:14px; padding:10px 18px; font-weight:800; color:#fff; background:var(--violet); }
+  .lesson-box{
+    background:linear-gradient(160deg,#fff8e0,#ffe9a3); border:2px solid var(--yellow); border-radius:18px;
+    padding:16px; margin:14px 0; text-align:left;
+  }
+  .lesson-box h4{ margin:0 0 6px; color:#5a4400; }
+  .lesson-box p{ margin:0 0 8px; color:#5a4400; font-weight:600; }
+  .back-lib-btn{ border:none; border-radius:14px; padding:10px 18px; font-weight:800; color:#fff; background:#FF9F5A; margin-top:6px; }
 </style>
 </head>
 <body>
@@ -350,6 +379,13 @@
         <p>Découvre les robots intelligents avec Pixel.</p>
         <div class="progress-track"><div class="progress-fill" id="prog-ia" style="width:0%;background:var(--violet);"></div></div>
         <button class="enter" style="background:var(--violet);" onclick="showScreen('module-ia')">Commencer</button>
+      </div>
+      <div class="module-card">
+        <div class="icon">📚</div>
+        <h3>Contes de Pixel</h3>
+        <p>Des histoires à écouter tout seul, avec une leçon à la fin.</p>
+        <div class="progress-track"><div class="progress-fill" id="prog-contes" style="width:0%;background:#FF9F5A;"></div></div>
+        <button class="enter" style="background:#FF9F5A;" onclick="showScreen('module-contes'); backToLibrary();">Commencer</button>
       </div>
     </div>
     <div class="reward-card" id="rewardCard">
@@ -519,6 +555,41 @@
     </div>
   </section>
 
+  <!-- ============ CONTES ============ -->
+  <section id="module-contes" class="screen">
+    <div class="panel" id="contes-library">
+      <h2>📚 La bibliothèque de Pixel</h2>
+      <p>Choisis une histoire, écoute-la toute seule ou tout seul, et découvre la leçon à la fin !</p>
+      <div class="story-cover-grid" id="storyCoverGrid"></div>
+    </div>
+
+    <div class="panel" id="contes-reader" style="display:none;">
+      <div class="story-page">
+        <div class="story-emoji-big" id="storyEmoji">📖</div>
+        <div class="story-text" id="storyText"></div>
+        <div class="story-dots" id="storyDots"></div>
+        <button class="sound-btn" onclick="replayStoryPage()">🔊 Réécouter</button>
+        <div class="story-nav">
+          <button onclick="storyPrev()">◀ Précédent</button>
+          <button onclick="storyNext()" id="storyNextBtn">Suivant ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="contes-end" style="display:none;">
+      <h2 id="storyEndTitle">Fin de l'histoire</h2>
+      <div class="lesson-box">
+        <h4>📋 Résumé</h4>
+        <p id="storySummary"></p>
+        <h4>💡 La leçon de cette histoire</h4>
+        <p id="storyLesson"></p>
+        <h4>🤔 Et toi ?</h4>
+        <p id="storyQuestion"></p>
+      </div>
+      <button class="back-lib-btn" onclick="backToLibrary()">📚 Retour à la bibliothèque</button>
+    </div>
+  </section>
+
 </div>
 
 <div class="modal-overlay" id="celebrateModal">
@@ -568,6 +639,8 @@ const DEFAULT_STATE = {
   iaJobsSeen:false,
   huntSeen:{},
   roboticsLevelsDone:{},
+  roboticsRandomWins:0,
+  storiesSeen:{},
   rewards:[
     {id:1, threshold:10, label:"10 minutes de dessin animé en plus", unlocked:false, given:false},
     {id:2, threshold:25, label:"Un petit jouet surprise", unlocked:false, given:false},
@@ -598,7 +671,7 @@ function resetProgress(){
   }
 }
 
-const MODULE_TARGETS = {lecture:55, ecriture:30, chiffres:30, ia:30};
+const MODULE_TARGETS = {lecture:55, ecriture:30, chiffres:30, ia:40, contes:15};
 
 function addStar(moduleKey, n){
   n = n || 1;
@@ -1284,7 +1357,7 @@ function setIaTab(tab){
   if(tab==='train'){ renderTrainBuckets(); nextTrainItem(); document.getElementById('brainFill').style.width = Math.min(100, Math.round(100*state.iaTrainCount/15))+'%'; }
   if(tab==='facts'){ renderFact(); }
   if(tab==='jobs'){ renderJobs(); }
-  if(tab==='robot'){ renderLevelRow(); loadLevel(currentLevelIdx); }
+  if(tab==='robot'){ renderLevelRow(); loadLevelCommon(); }
 }
 
 /* ============================================================
@@ -1299,26 +1372,62 @@ const MAZE_LEVELS = [
   { size:4, start:{r:3,c:0,dir:'up'}, target:{r:0,c:3}, walls:[] },
   { size:4, start:{r:0,c:0,dir:'right'}, target:{r:3,c:3}, walls:[] },
   { size:4, start:{r:3,c:0,dir:'up'}, target:{r:0,c:2}, walls:[{r:1,c:0},{r:1,c:1}] },
-  { size:4, start:{r:0,c:0,dir:'down'}, target:{r:3,c:0}, walls:[{r:1,c:1},{r:2,c:1},{r:1,c:2}] }
+  { size:4, start:{r:0,c:0,dir:'down'}, target:{r:3,c:0}, walls:[{r:1,c:1},{r:2,c:1},{r:1,c:2}] },
+  { size:4, start:{r:3,c:0,dir:'up'}, coins:[{r:1,c:0},{r:0,c:3}], walls:[] },
+  { size:5, start:{r:4,c:0,dir:'up'}, target:{r:0,c:4}, walls:[] },
+  { size:5, start:{r:0,c:0,dir:'right'}, target:{r:4,c:4}, walls:[{r:1,c:1},{r:1,c:2},{r:1,c:3}] },
+  { size:5, start:{r:4,c:4,dir:'left'}, coins:[{r:4,c:0},{r:0,c:0},{r:0,c:4}], walls:[{r:2,c:2}] },
+  { size:5, start:{r:0,c:0,dir:'down'}, coins:[{r:2,c:0},{r:4,c:2}], walls:[{r:1,c:1},{r:2,c:1},{r:3,c:1},{r:3,c:3},{r:2,c:3}] }
 ];
 let currentLevelIdx = 0;
+let randomLevelData = null;
 let program = [];
 let mazeRobotState = null;
+let mazeVisitedCoins = new Set();
+
+function getLevel(){
+  return currentLevelIdx==='random' ? randomLevelData : MAZE_LEVELS[currentLevelIdx];
+}
 
 function renderLevelRow(){
   const row = document.getElementById('levelRow');
   row.innerHTML = '';
   MAZE_LEVELS.forEach((lvl,i)=>{
     const b = document.createElement('button');
-    b.className = 'level-btn' + (i===currentLevelIdx?' active':'') + (state.roboticsLevelsDone[i]?' done':'');
+    b.className = 'level-btn' + (currentLevelIdx===i?' active':'') + (state.roboticsLevelsDone[i]?' done':'');
     b.textContent = 'Niveau '+(i+1);
-    b.onclick = ()=>{ currentLevelIdx=i; loadLevel(i); renderLevelRow(); };
+    b.onclick = ()=>{ currentLevelIdx=i; randomLevelData=null; loadLevelCommon(); renderLevelRow(); };
     row.appendChild(b);
   });
+  const randomBtn = document.createElement('button');
+  randomBtn.className = 'level-btn random-btn' + (currentLevelIdx==='random'?' active':'');
+  randomBtn.textContent = '🎲 Défi surprise';
+  randomBtn.onclick = ()=>{ generateRandomChallenge(); renderLevelRow(); };
+  row.appendChild(randomBtn);
 }
+
+function generateRandomChallenge(){
+  const size = Math.random()<0.5 ? 4 : 5;
+  const dirs4 = ['up','right','down','left'];
+  const start = { r:Math.floor(Math.random()*size), c:Math.floor(Math.random()*size), dir:dirs4[Math.floor(Math.random()*4)] };
+  let target;
+  do{
+    target = { r:Math.floor(Math.random()*size), c:Math.floor(Math.random()*size) };
+  } while(target.r===start.r && target.c===start.c);
+  randomLevelData = { size, start, target, walls:[] };
+  currentLevelIdx = 'random';
+  loadLevelCommon();
+}
+
 function loadLevel(idx){
-  const lvl = MAZE_LEVELS[idx];
+  currentLevelIdx = idx;
+  randomLevelData = null;
+  loadLevelCommon();
+}
+function loadLevelCommon(){
+  const lvl = getLevel();
   mazeRobotState = { r:lvl.start.r, c:lvl.start.c, dir:lvl.start.dir };
+  mazeVisitedCoins = new Set();
   program = [];
   renderProgramRow();
   renderMazeGrid(lvl);
@@ -1334,14 +1443,18 @@ function renderMazeGrid(lvl){
     for(let c=0;c<lvl.size;c++){
       const cell = document.createElement('div');
       cell.className = 'maze-cell';
-      if(lvl.walls.some(w=>w.r===r && w.c===c)) cell.classList.add('wall');
-      if(lvl.target.r===r && lvl.target.c===c){ cell.classList.add('target'); cell.textContent='⭐'; }
+      if(lvl.walls && lvl.walls.some(w=>w.r===r && w.c===c)) cell.classList.add('wall');
+      if(lvl.target && lvl.target.r===r && lvl.target.c===c){ cell.classList.add('target'); cell.textContent='⭐'; }
+      if(lvl.coins){
+        const ci = lvl.coins.findIndex(w=>w.r===r && w.c===c);
+        if(ci>=0){ cell.classList.add('coin'); cell.dataset.coinIdx = ci; cell.textContent='💎'; }
+      }
       grid.appendChild(cell);
     }
   }
 }
 function positionRobot(instant){
-  const lvl = MAZE_LEVELS[currentLevelIdx];
+  const lvl = getLevel();
   const cellSize = 240/lvl.size;
   const robot = document.getElementById('mazeRobot');
   if(instant){ robot.style.transition = 'none'; }
@@ -1362,35 +1475,51 @@ function renderProgramRow(){
   });
 }
 function addBlock(type){
-  if(program.length>=10) return;
+  if(program.length>=12) return;
   program.push(type);
   renderProgramRow();
 }
 function undoBlock(){ program.pop(); renderProgramRow(); }
 function clearProgram(){ program = []; renderProgramRow(); }
 
+function markCoinCollected(idx){
+  const grid = document.getElementById('mazeGrid');
+  const cell = grid.querySelector(`.coin[data-coin-idx="${idx}"]`);
+  if(cell) cell.classList.add('collected');
+}
+
 function runProgram(){
-  const lvl = MAZE_LEVELS[currentLevelIdx];
+  const lvl = getLevel();
   mazeRobotState = { r:lvl.start.r, c:lvl.start.c, dir:lvl.start.dir };
+  mazeVisitedCoins = new Set();
   positionRobot(true);
   document.getElementById('mazeFeedback').textContent = '';
+  renderMazeGrid(lvl);
+  checkCoinAt(mazeRobotState.r, mazeRobotState.c, lvl);
   let i = 0;
   function step(){
     if(i>=program.length){
-      const success = mazeRobotState.r===lvl.target.r && mazeRobotState.c===lvl.target.c;
       const fb = document.getElementById('mazeFeedback');
+      let success;
+      if(lvl.coins){
+        success = mazeVisitedCoins.size === lvl.coins.length;
+      } else {
+        success = mazeRobotState.r===lvl.target.r && mazeRobotState.c===lvl.target.c;
+      }
       if(success){
         fb.className = 'feedback-msg good';
         fb.textContent = "Bravo, tu as programmé Pixel avec succès ! 🎉";
         speak('Bravo, mission réussie !');
-        if(!state.roboticsLevelsDone[currentLevelIdx]){
+        if(currentLevelIdx==='random'){
+          if(state.roboticsRandomWins<5){ state.roboticsRandomWins++; addStar('ia',1); }
+        } else if(!state.roboticsLevelsDone[currentLevelIdx]){
           state.roboticsLevelsDone[currentLevelIdx] = true;
           addStar('ia',1);
           renderLevelRow();
         }
       } else {
         fb.className = 'feedback-msg retry';
-        fb.textContent = "Presque ! Essaie une autre suite de commandes.";
+        fb.textContent = lvl.coins ? "Presque ! Il manque encore des diamants à récupérer." : "Presque ! Essaie une autre suite de commandes.";
       }
       return;
     }
@@ -1403,14 +1532,163 @@ function runProgram(){
       const d = DIR_DELTA[mazeRobotState.dir];
       const nr = mazeRobotState.r + d.dr, nc = mazeRobotState.c + d.dc;
       const inBounds = nr>=0 && nc>=0 && nr<lvl.size && nc<lvl.size;
-      const blocked = lvl.walls.some(w=>w.r===nr && w.c===nc);
+      const blocked = lvl.walls && lvl.walls.some(w=>w.r===nr && w.c===nc);
       if(inBounds && !blocked){ mazeRobotState.r = nr; mazeRobotState.c = nc; }
+      checkCoinAt(mazeRobotState.r, mazeRobotState.c, lvl);
     }
     positionRobot(false);
     i++;
     setTimeout(step, 500);
   }
   step();
+}
+function checkCoinAt(r,c,lvl){
+  if(!lvl.coins) return;
+  const idx = lvl.coins.findIndex(w=>w.r===r && w.c===c);
+  if(idx>=0 && !mazeVisitedCoins.has(idx)){
+    mazeVisitedCoins.add(idx);
+    markCoinCollected(idx);
+  }
+}
+
+/* ============================================================
+   CONTES (interactive read-aloud stories with a moral)
+============================================================ */
+const STORIES = [
+  { id:'renard', cover:'🦊', title:"Le petit renard qui avait peur du noir",
+    pages:[
+      {emoji:'🦊🌙', text:"Rouky le petit renard adorait jouer dans la forêt... mais dès que la nuit tombait, il avait terriblement peur du noir."},
+      {emoji:'🌲', text:"Un soir, en rentrant chez lui, Rouky se perdit dans les bois sombres. Son cœur battait très fort."},
+      {emoji:'🦔', text:"Il rencontra Pic, un petit hérisson qui n'avait pas peur du tout. « Pourquoi trembles-tu ? » demanda Pic."},
+      {emoji:'🕯️', text:"« J'ai peur du noir » avoua Rouky. Pic sourit : « Le noir ne fait pas de mal, ce sont nos pensées qui nous font peur. Avance avec moi, pas à pas. »"},
+      {emoji:'⭐', text:"Ensemble, guidés par la lumière des étoiles, ils retrouvèrent le chemin de la maison. Rouky n'avait plus si peur, car il n'était plus seul."}
+    ],
+    summary:"Rouky avait peur du noir, mais grâce à l'aide de son ami Pic le hérisson, il a appris à avancer malgré sa peur et à retrouver son chemin.",
+    lesson:"Le courage, ce n'est pas de ne jamais avoir peur : c'est d'avancer quand même, surtout quand on est bien entouré.",
+    question:"Et toi, qu'est-ce qui t'aide quand tu as un peu peur ?"
+  },
+  { id:'escargot', cover:'🐌', title:"Zéphyr l'escargot qui n'était jamais pressé",
+    pages:[
+      {emoji:'🐌', text:"Zéphyr l'escargot avançait tout doucement sur le grand chemin du jardin."},
+      {emoji:'🐇', text:"Un lièvre pressé le dépassa en riant : « Tu n'arriveras jamais avant la nuit, petit lambin ! »"},
+      {emoji:'🌻', text:"Zéphyr ne se vexa pas. Il continua tranquillement, en admirant chaque fleur sur sa route."},
+      {emoji:'😮', text:"Plus loin, le lièvre s'était arrêté pour faire la sieste, trop fatigué d'avoir couru si vite."},
+      {emoji:'🏁', text:"Zéphyr, lui, arriva tout doucement, mais sûrement, jusqu'au bout du jardin, juste avant la tombée de la nuit."}
+    ],
+    summary:"Zéphyr avançait lentement mais sans jamais s'arrêter, alors que le lièvre pressé s'est épuisé en chemin.",
+    lesson:"Ce n'est pas toujours celui qui va le plus vite qui arrive le premier : la patience et la régularité mènent loin.",
+    question:"Y a-t-il quelque chose que tu apprends petit à petit, chaque jour, comme Zéphyr ?"
+  },
+  { id:'etoile', cover:'✨', title:"L'étoile qui ne brillait pas comme les autres",
+    pages:[
+      {emoji:'✨', text:"Dans le grand ciel, il y avait des milliers d'étoiles dorées... sauf une, toute petite et un peu bleutée, nommée Némo."},
+      {emoji:'😢', text:"Némo pensait qu'elle n'était pas assez belle. Elle essayait de briller plus fort, comme les autres, mais rien n'y faisait."},
+      {emoji:'🌌', text:"Une nuit, un petit garçon leva les yeux vers le ciel et remarqua justement cette étoile bleutée, si différente des autres."},
+      {emoji:'💙', text:"« Regarde comme cette étoile est unique ! » dit-il à sa maman. « On dirait un petit diamant bleu au milieu de l'or. »"},
+      {emoji:'🌟', text:"Némo comprit alors qu'elle n'avait pas besoin de briller comme les autres : sa lumière différente était justement ce qui la rendait spéciale."}
+    ],
+    summary:"Némo l'étoile bleue pensait ne pas être assez belle, jusqu'à ce qu'elle comprenne que sa différence était sa plus grande richesse.",
+    lesson:"Chacun de nous est unique, et c'est justement ce qui nous rend précieux.",
+    question:"Qu'est-ce qui te rend unique, toi, et dont tu es fier ou fière ?"
+  },
+  { id:'lapin', cover:'🐰', title:"Le lapin qui n'écoutait jamais",
+    pages:[
+      {emoji:'🐰', text:"Filou le lapin adorait faire les choses à sa manière, et n'écoutait jamais vraiment les conseils de sa maman."},
+      {emoji:'⚠️', text:"« Ne va pas près du grand ruisseau, le courant est fort » lui dit-elle un matin. Mais Filou n'en fit qu'à sa tête."},
+      {emoji:'🌊', text:"Il s'approcha du ruisseau pour observer les poissons de plus près... et glissa sur une pierre mouillée !"},
+      {emoji:'🦫', text:"Heureusement, Castor, qui passait par là, l'attrapa juste à temps et le ramena sur la rive, trempé mais sain et sauf."},
+      {emoji:'🏡', text:"Ce soir-là, Filou remercia sa maman pour ses conseils. Il comprit qu'écouter ne veut pas dire obéir bêtement, mais se protéger intelligemment."}
+    ],
+    summary:"Filou n'écoutait jamais les conseils, jusqu'au jour où il faillit tomber dans le ruisseau. Castor l'a sauvé juste à temps.",
+    lesson:"Écouter les conseils de ceux qui nous aiment, ce n'est pas perdre sa liberté : c'est se donner les moyens de rester en sécurité tout en restant curieux du monde.",
+    question:"Peux-tu penser à un conseil qu'on t'a donné et qui t'a été utile ?"
+  },
+  { id:'graine', cover:'🌱', title:"La petite graine patiente",
+    pages:[
+      {emoji:'🌱', text:"Une petite graine fut plantée au fond de la terre, dans le noir complet."},
+      {emoji:'💧', text:"Chaque jour, on l'arrosait, et chaque jour, elle attendait... sans rien voir pousser."},
+      {emoji:'😞', text:"« Il ne se passe rien, je suis un échec » pensait-elle, sans savoir que sous la terre, ses racines poussaient déjà très fort."},
+      {emoji:'🌦️', text:"Après plusieurs semaines de patience, un petit bourgeon vert perça enfin la terre pour voir la lumière du soleil."},
+      {emoji:'🌻', text:"La graine était devenue un magnifique tournesol, plus grand que tous les autres, car ses racines profondes le rendaient très solide."}
+    ],
+    summary:"La graine a mis du temps à pousser, mais pendant ce temps ses racines devenaient solides sous la terre, jusqu'à devenir un magnifique tournesol.",
+    lesson:"Les efforts qu'on ne voit pas tout de suite comptent quand même : la patience et le travail discret préparent de belles réussites.",
+    question:"Y a-t-il quelque chose que tu pratiques encore, même si les progrès ne se voient pas encore beaucoup ?"
+  }
+];
+let currentStoryId = null;
+let currentPageIdx = 0;
+
+function renderContesLibrary(){
+  const grid = document.getElementById('storyCoverGrid');
+  grid.innerHTML = '';
+  STORIES.forEach(story=>{
+    const card = document.createElement('button');
+    card.className = 'story-cover-card';
+    const done = state.storiesSeen[story.id];
+    card.innerHTML = `<div class="cover-emoji">${story.cover}</div><div><h3>${story.title}${done?' ✅':''}</h3><p>${story.pages.length} pages · ${done? 'Déjà lu':'À découvrir'}</p></div>`;
+    card.onclick = ()=>openStory(story.id);
+    grid.appendChild(card);
+  });
+}
+function backToLibrary(){
+  document.getElementById('contes-library').style.display = 'block';
+  document.getElementById('contes-reader').style.display = 'none';
+  document.getElementById('contes-end').style.display = 'none';
+  renderContesLibrary();
+}
+function openStory(id){
+  currentStoryId = id;
+  currentPageIdx = 0;
+  document.getElementById('contes-library').style.display = 'none';
+  document.getElementById('contes-end').style.display = 'none';
+  document.getElementById('contes-reader').style.display = 'block';
+  renderStoryPage();
+}
+function getStory(){ return STORIES.find(s=>s.id===currentStoryId); }
+function renderStoryPage(){
+  const story = getStory();
+  const page = story.pages[currentPageIdx];
+  document.getElementById('storyEmoji').textContent = page.emoji;
+  document.getElementById('storyText').textContent = page.text;
+  const dots = document.getElementById('storyDots');
+  dots.innerHTML = '';
+  story.pages.forEach((_,i)=>{
+    const d = document.createElement('span');
+    if(i===currentPageIdx) d.className = 'active';
+    dots.appendChild(d);
+  });
+  document.getElementById('storyNextBtn').textContent = (currentPageIdx===story.pages.length-1) ? "Voir le résumé ▶" : "Suivant ▶";
+  speak(page.text);
+}
+function replayStoryPage(){
+  const story = getStory();
+  speak(story.pages[currentPageIdx].text);
+}
+function storyPrev(){
+  if(currentPageIdx>0){ currentPageIdx--; renderStoryPage(); }
+}
+function storyNext(){
+  const story = getStory();
+  if(currentPageIdx < story.pages.length-1){
+    currentPageIdx++; renderStoryPage();
+  } else {
+    finishStory();
+  }
+}
+function finishStory(){
+  const story = getStory();
+  document.getElementById('contes-reader').style.display = 'none';
+  document.getElementById('contes-end').style.display = 'block';
+  document.getElementById('storyEndTitle').textContent = `Fin de : ${story.title}`;
+  document.getElementById('storySummary').textContent = story.summary;
+  document.getElementById('storyLesson').textContent = story.lesson;
+  document.getElementById('storyQuestion').textContent = story.question;
+  speak("La leçon de cette histoire : " + story.lesson);
+  if(!state.storiesSeen[story.id]){
+    state.storiesSeen[story.id] = true;
+    addStar('contes',3);
+  }
 }
 
 /* ============================================================
